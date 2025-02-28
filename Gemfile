@@ -66,6 +66,7 @@ end
 gem "blacklight", ">= 7.0"
 
 group :development, :test do
+  gem "rspec-rails", '~> 7.0.0'
   gem "solr_wrapper", ">= 0.3"
 end
 gem "rsolr", ">= 1.0", "< 3"
