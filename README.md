@@ -1,24 +1,30 @@
-# README
+# Special Collections Prototype
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+NYU Libraries Special Collections Discovery Application recreated with Blacklight 8.x
 
-Things you may want to cover:
+## Getting Started
 
-* Ruby version
+To check out the project and stand up a local instance:
 
-* System dependencies
+```bash
+$ git clone git@github.com:NYULibraries/specialcollections-prototype.git
+$ cd specialcollections-prototype
+$ bundle install
+$ bin/rake sc:server
+```
 
-* Configuration
+Then visit <http://localhost:3000>
 
-* Database creation
+## Test Suite
 
-* Database initialization
+To run the test suite:
 
-* How to run the test suite
+```bash
+$ bin/rake sc:test
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+To autofix any Rubocop issues run the following:
 
-* Deployment instructions
-
-* ...
+```bash
+$ bundle exec rubocop -a
+```
