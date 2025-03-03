@@ -11,6 +11,5 @@ require 'solr_wrapper/rake_task' unless Rails.env.production?
 
 task default: %i[
   spec
-  cucumber
   rubocop
 ]
