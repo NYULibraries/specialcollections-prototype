@@ -17,7 +17,7 @@ jobs:
     docker:
       # Specify the version you desire here
       # See: https://circleci.com/developer/images/image/cimg/ruby
-      - image: cimg/ruby:3.3
+      - image: cimg/ruby:3.3.4-browsers
 
     # Add steps to the job
     # See: https://circleci.com/docs/jobs-steps/#steps-overview & https://circleci.com/docs/configuration-reference/#steps
@@ -28,6 +28,9 @@ jobs:
           name: Which bundler?
           command: bundle -v
       - ruby/install-deps
+      - run:
+          name: Test suite
+          command: bundle exec rake sc:test
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
