@@ -11,6 +11,7 @@ jobs:
           RAILS_ENV: test
           SOLR_URL: http://localhost:8983/solr/blacklight-core
       - image: solr:9.6.1
+        command: bin/solr -cloud -noprompt -f -p 8983
     steps:
       - checkout
       - run:
