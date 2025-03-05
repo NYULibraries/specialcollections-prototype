@@ -16,9 +16,10 @@ jobs:
           SOLR_HOME: /var/solr/data
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: Which directory?
-          command: pwd
+          command: ls -la
       - run:
           name: Which bundler?
           command: bundle -v
