@@ -17,13 +17,16 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Which directory?
+          command: pwd
+      - run:
           name: Which bundler?
           command: bundle -v
       - ruby/install-deps
       - run:
           name: Copy Solr Configuration
           command: |
-            docker cp solr/conf solr:/var/solr/data/config
+            docker cp solr/conf/. solr:/var/solr/data/config
       - run:
           name: Create Solr Core
           command: |
