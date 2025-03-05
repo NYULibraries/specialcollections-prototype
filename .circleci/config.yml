@@ -11,7 +11,9 @@ jobs:
           RAILS_ENV: test
           SOLR_URL: http://localhost:8983/solr/blacklight-core
       - image: solr:9.6.1
-        command: bin/solr -cloud -noprompt -f -p 8983
+        name: solr
+        environment:
+          SOLR_HOME: /var/solr/data
     steps:
       - checkout
       - run:
@@ -19,12 +21,20 @@ jobs:
           command: bundle -v
       - ruby/install-deps
       - run:
-          name: Load core config into Solr
+          name: Copy Solr Configuration
           command: |
-            cd solr/conf
-            zip -1 -r solr_config.zip ./*
-            curl -H "Content-type:application/octet-stream" --data-binary @solr_config.zip "http://localhost:8983/solr/admin/configs?action=UPLOAD&name=blacklight"
-            curl "http://localhost:8983/solr/admin/collections?action=CREATE&name=blacklight-core&numShards=1&collection.configName=blacklight"
+            docker cp ./solr/conf solr:/var/solr/data/
+      - run:
+          name: Create Solr Core
+          command: |
+            docker exec solr solr create -c blacklight-core -d /var/solr/data/solr/conf
+      - run:
+          name: Wait for Solr
+          command: |
+            until curl -s "http://localhost:8983/solr/admin/ping" | grep -q '"status":"OK"'; do
+              echo "Waiting for Solr..."
+              sleep 5
+            done
       - run:
           name: Test suite
           command: bundle exec rake
