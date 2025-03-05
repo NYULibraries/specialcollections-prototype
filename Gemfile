@@ -71,6 +71,4 @@ group :development, :test do
 end
 gem "rsolr", ">= 1.0", "< 3"
 gem "bootstrap", "~> 5.3"
-gem "devise"
-gem "devise-guests", "~> 0.8"
 gem "blacklight-marc", "~> 8.0"
