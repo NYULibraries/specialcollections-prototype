@@ -23,7 +23,7 @@ jobs:
       - run:
           name: Copy Solr Configuration
           command: |
-            docker cp -r ./solr/conf/* solr:/var/solr/data/blacklight-config
+            docker cp ./solr/conf/* solr:/var/solr/data/blacklight-config
       - run:
           name: Create Solr Core
           command: |
