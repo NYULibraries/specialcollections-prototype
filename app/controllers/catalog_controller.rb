@@ -3,6 +3,7 @@
 # Blacklight controller that handles searches and document requests
 class CatalogController < ApplicationController
   include Blacklight::Catalog
+  include Findingaids::Solr::CatalogHelpers
 
   # If you'd like to handle errors returned by Solr in a certain way,
   # you can use Rails rescue_from with a method you define in this controller,
@@ -108,21 +109,25 @@ class CatalogController < ApplicationController
     #  (useful when user clicks "more" on a large facet and wants to navigate alphabetically across a large set of results)
     # :index_range can be an array or range of prefixes that will be used to create the navigation (note: It is case sensitive when searching values)
 
-    config.add_facet_field "format", label: "Format"
-    config.add_facet_field "pub_date_ssim", label: "Publication Year", single: true
-    config.add_facet_field "subject_ssim", label: "Topic", limit: 20, index_range: "A".."Z"
-    config.add_facet_field "language_ssim", label: "Language", limit: true
-    config.add_facet_field "lc_1letter_ssim", label: "Call Number"
-    config.add_facet_field "subject_geo_ssim", label: "Region"
-    config.add_facet_field "subject_era_ssim", label: "Era"
+    facet_fields.each do |facet|
+      config.add_facet_field solr_name(facet[:field], :facetable), label: facet[:label], helper_method: facet[:helper_method], limit: (facet[:limit] || 20)
+    end
 
-    config.add_facet_field "example_pivot_field", label: "Pivot Field", pivot: [ "format", "language_ssim" ], collapsing: true
-
-    config.add_facet_field "example_query_facet_field", label: "Publish Date", query: {
-       years_5: { label: "within 5 Years", fq: "pub_date_ssim:[#{Time.zone.now.year - 5 } TO *]" },
-       years_10: { label: "within 10 Years", fq: "pub_date_ssim:[#{Time.zone.now.year - 10 } TO *]" },
-       years_25: { label: "within 25 Years", fq: "pub_date_ssim:[#{Time.zone.now.year - 25 } TO *]" }
-    }
+    # config.add_facet_field "format", label: "Format"
+    # config.add_facet_field "pub_date_ssim", label: "Publication Year", single: true
+    # config.add_facet_field "subject_ssim", label: "Topic", limit: 20, index_range: "A".."Z"
+    # config.add_facet_field "language_ssim", label: "Language", limit: true
+    # config.add_facet_field "lc_1letter_ssim", label: "Call Number"
+    # config.add_facet_field "subject_geo_ssim", label: "Region"
+    # config.add_facet_field "subject_era_ssim", label: "Era"
+    #
+    # config.add_facet_field "example_pivot_field", label: "Pivot Field", pivot: [ "format", "language_ssim" ], collapsing: true
+    #
+    # config.add_facet_field "example_query_facet_field", label: "Publish Date", query: {
+    #    years_5: { label: "within 5 Years", fq: "pub_date_ssim:[#{Time.zone.now.year - 5 } TO *]" },
+    #    years_10: { label: "within 10 Years", fq: "pub_date_ssim:[#{Time.zone.now.year - 10 } TO *]" },
+    #    years_25: { label: "within 25 Years", fq: "pub_date_ssim:[#{Time.zone.now.year - 25 } TO *]" }
+    # }
 
 
     # Have BL send all facet field names to Solr, which has been the default
@@ -218,10 +223,11 @@ class CatalogController < ApplicationController
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case). Add the sort: option to configure a
     # custom Blacklight url parameter value separate from the Solr sort fields.
-    config.add_sort_field "relevance", sort: "score desc, pub_date_si desc, title_si asc", label: "relevance"
-    config.add_sort_field "year-desc", sort: "pub_date_si desc, title_si asc", label: "year"
-    config.add_sort_field "author", sort: "author_si asc, title_si asc", label: "author"
-    config.add_sort_field "title_si asc, pub_date_si desc", label: "title"
+    # config.add_sort_field "relevance", sort: "score desc, pub_date_si desc, title_si asc", label: "relevance"
+    # config.add_sort_field "year-desc", sort: "pub_date_si desc, title_si asc", label: "year"
+    # config.add_sort_field "author", sort: "author_si asc, title_si asc", label: "author"
+    # config.add_sort_field "title_si asc, pub_date_si desc", label: "title"
+    config.add_sort_field "score desc",                   :label => "relevance"
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
