@@ -421,6 +421,10 @@ GEM
       ostruct
       retriable
       ruby-progressbar
+    solrizer (4.1.0)
+      activesupport
+      nokogiri
+      xml-simple
     sqlite3 (2.6.0-aarch64-linux-gnu)
     sqlite3 (2.6.0-aarch64-linux-musl)
     sqlite3 (2.6.0-arm-linux-gnu)
@@ -483,6 +487,8 @@ GEM
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    xml-simple (1.1.9)
+      rexml
     xpath (3.2.0)
       nokogiri (~> 1.8)
     yell (2.2.2)
@@ -523,6 +529,7 @@ DEPENDENCIES
   solid_cache
   solid_queue
   solr_wrapper (>= 0.3)
+  solrizer
   sqlite3 (>= 2.1)
   stimulus-rails
   thruster
