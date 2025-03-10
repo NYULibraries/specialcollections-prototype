@@ -73,3 +73,4 @@ gem "rsolr", ">= 1.0", "< 3"
 gem "bootstrap", "~> 5.3"
 gem "blacklight-marc", "~> 8.0"
 gem "solrizer"
+gem 'blacklight_advanced_search'
