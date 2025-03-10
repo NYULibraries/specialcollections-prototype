@@ -75,3 +75,4 @@ gem "devise"
 gem "devise-guests", "~> 0.8"
 gem "blacklight-marc", "~> 8.0"
 gem "solrizer"
+gem 'blacklight_advanced_search'

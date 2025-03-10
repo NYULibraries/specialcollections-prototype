@@ -1,3 +1,5 @@
 class ApplicationRecord < ActiveRecord::Base
-  primary_abstract_class
+  include BlacklightAdvancedSearch::AdvancedSearchBuilder
+  include Blacklight::Solr::SearchBuilderBehavior
+  # self.default_processor_chain += [:add_advanced_parse_q_to_solr, :add_advanced_search_to_solr]
 end
