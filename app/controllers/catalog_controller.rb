@@ -3,9 +3,17 @@
 # Blacklight controller that handles searches and document requests
 class CatalogController < ApplicationController
   include Blacklight::Catalog
-  include BlacklightAdvancedSearch::Controller
+  # include BlacklightAdvancedSearch::Controller
   include Findingaids::Solr::CatalogHelpers
   delegate :is_collection?, to: :view_context
+
+  def search_state_class
+    Blacklight::SearchState
+  end
+
+  def search_results(params)
+
+  end
 
   # If you'd like to handle errors returned by Solr in a certain way,
   # you can use Rails rescue_from with a method you define in this controller,

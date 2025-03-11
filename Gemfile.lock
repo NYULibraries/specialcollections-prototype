@@ -100,9 +100,6 @@ GEM
       marc-fastxmlwriter
       rails
       traject (~> 3.0)
-    blacklight_advanced_search (8.0.0.alpha2)
-      blacklight (>= 7.15, < 9)
-      parslet
     bootsnap (1.18.4)
       msgpack (~> 1.2)
     bootstrap (5.3.3)
@@ -281,7 +278,6 @@ GEM
     parser (3.3.7.1)
       ast (~> 2.4.1)
       racc
-    parslet (2.0.0)
     popper_js (2.11.8)
     pp (0.6.2)
       prettyprint
@@ -513,7 +509,6 @@ PLATFORMS
 DEPENDENCIES
   blacklight (>= 7.0)
   blacklight-marc (~> 8.0)
-  blacklight_advanced_search
   bootsnap
   bootstrap (~> 5.3)
   brakeman
