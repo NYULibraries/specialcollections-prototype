@@ -28,3 +28,9 @@ To autofix any Rubocop issues run the following:
 ```bash
 $ bundle exec rubocop -a
 ```
+
+## Running Against Another Solr
+
+```bash
+$ SOLR_URL=http://ip-address:port/solr/findingaids bin/rails server
+```
