@@ -206,7 +206,8 @@ class CatalogController < ApplicationController
     config.spell_max = 5
 
     # Configuration for autocomplete suggestor
-    config.autocomplete_enabled = true
+    # TODO: Do we ever want this enabled? Currently doesn't work with Solr configuration
+    config.autocomplete_enabled = false
     config.autocomplete_path = 'suggest'
   end
 

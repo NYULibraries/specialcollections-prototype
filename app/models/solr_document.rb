@@ -76,14 +76,4 @@ class SolrDocument
   def matches_dynamic_format_check?(method_id)
     /^is_([a-zA-Z]\w*)\?$/.match(method_id.to_s)
   end
-
-  def parent_unittitles
-    # TODO: Find out where this should be coming from
-    []
-  end
-
-  def unittitle
-    # TODO: Find out where this should be coming from
-    ""
-  end
 end

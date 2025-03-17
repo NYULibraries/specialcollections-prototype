@@ -9,7 +9,9 @@ module ApplicationHelper
 
   # Abstract actually constructing the url to the finding aids document
   def get_url_for_findingaid_from_document(doc)
-    ENV['FINDINGAIDS_2022_MIGRATION'] ? get_url_for_2022_findingaid_from_document(doc) : get_url_for_legacy_findingaid_from_document(doc)
+    # TODO: Confirm that this flag can just be hardcoded going forward
+    # ENV['FINDINGAIDS_2022_MIGRATION'] ? get_url_for_2022_findingaid_from_document(doc) : get_url_for_legacy_findingaid_from_document(doc)
+    get_url_for_2022_findingaid_from_document(doc)
   end
 
   # Abstract actually constructing the url to the finding aids document

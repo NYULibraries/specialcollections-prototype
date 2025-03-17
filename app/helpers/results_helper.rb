@@ -40,10 +40,7 @@ module ResultsHelper
   ##
   # Helper function to determine if collection
   def is_collection?(field_config, doc)
-    # TODO: Find out where this is supposed to come from
-    #doc.is_archival_collection?
-
-    return false
+    doc.is_archival_collection?
   end
 
   ##
