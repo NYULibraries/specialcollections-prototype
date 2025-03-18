@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   mount Blacklight::Engine => "/"
+  mount BlacklightAdvancedSearch::Engine => '/'
+
   root to: "catalog#index"
   concern :searchable, Blacklight::Routes::Searchable.new
 

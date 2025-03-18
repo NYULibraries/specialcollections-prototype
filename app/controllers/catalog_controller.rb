@@ -3,11 +3,11 @@
 # Blacklight controller that handles searches and document requests
 class CatalogController < ApplicationController
   include Blacklight::Catalog
+  include BlacklightAdvancedSearch::Controller
   include Findingaids::Solr::CatalogHelpers
   delegate :is_collection?, to: :view_context
 
   configure_blacklight do |config|
-
     ## Class for sending and receiving requests from a search index
     # config.repository_class = Blacklight::Solr::Repository
     #
@@ -33,14 +33,15 @@ class CatalogController < ApplicationController
 
     # default advanced config values
     config.advanced_search ||= Blacklight::OpenStructWithHashAccess.new
-    config.advanced_search[:url_key] ||= 'advanced'
-    config.advanced_search[:query_parser] ||= 'dismax'
+    config.advanced_search[:enabled] = true
+    config.advanced_search[:qt] ||= 'advanced'
     config.advanced_search[:form_solr_parameters] = {
       "facet" => true,
       "facet.field" => advanced_facet_fields.map {|facet| solr_name(facet[:field], :facetable)},
       "facet.limit" => -1, # return all facet values
       "facet.sort" => "count" # sort by byte order of values
     }
+    config.advanced_search[:query_parser] ||= 'dismax'
 
     # solr path which will be added to solr base url before the other solr params.
     #config.solr_path = 'select'
