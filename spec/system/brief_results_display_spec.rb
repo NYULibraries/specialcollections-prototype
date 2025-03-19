@@ -46,35 +46,35 @@ describe "Brief Results Display", type: :system do
     end
   end
 
-  it "display at the component level" do
-    pending
-  end
-
-  it "links to low level results for the series level components" do
-    pending
-  end
-
-  it "links to search all materials within collection launches faceted search" do
-    pending
-  end
-
-  it "links to search all materials within series launches faceted search" do
-    pending
-  end
-
-  it "links to collection in component result launches faceted search" do
-    pending
-  end
-
-  context "if series doesn't have title" do
-    it "does not provide a link to lower level materials" do
-      pending
-    end
-  end
-
-  context "if document doesn't have title" do
-    it "displays 'No Title'" do
-      pending
-    end
-  end
+  # it "display at the component level" do
+  #   pending("Not yet")
+  # end
+  #
+  # it "links to low level results for the series level components" do
+  #   pending("Not yet")
+  # end
+  #
+  # it "links to search all materials within collection launches faceted search" do
+  #   pending("Not yet")
+  # end
+  #
+  # it "links to search all materials within series launches faceted search" do
+  #   pending("Not yet")
+  # end
+  #
+  # it "links to collection in component result launches faceted search" do
+  #   pending("Not yet")
+  # end
+  #
+  # context "if series doesn't have title" do
+  #   it "does not provide a link to lower level materials" do
+  #     pending("Not yet")
+  #   end
+  # end
+  #
+  # context "if document doesn't have title" do
+  #   it "displays 'No Title'" do
+  #     pending("Not yet")
+  #   end
+  # end
 end

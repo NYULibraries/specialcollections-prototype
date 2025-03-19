@@ -72,17 +72,18 @@
        The examples below can be used to load some solr-contribs along 
        with their external dependencies.
     -->
-  <lib dir="../../../contrib/extraction/lib" regex=".*\.jar" />
-  <lib dir="../../../dist/" regex="solr-cell-\d.*\.jar" />
+<!-- TODO: Figure out if these are necessary -->
+<!--  <lib dir="../../../contrib/extraction/lib" regex=".*\.jar" />-->
+<!--  <lib dir="../../../dist/" regex="solr-cell-\d.*\.jar" />-->
 
-  <lib dir="../../../contrib/clustering/lib/" regex=".*\.jar" />
-  <lib dir="../../../dist/" regex="solr-clustering-\d.*\.jar" />
+<!--  <lib dir="../../../contrib/clustering/lib/" regex=".*\.jar" />-->
+<!--  <lib dir="../../../dist/" regex="solr-clustering-\d.*\.jar" />-->
 
-  <lib dir="../../../contrib/langid/lib/" regex=".*\.jar" />
-  <lib dir="../../../dist/" regex="solr-langid-\d.*\.jar" />
+<!--  <lib dir="../../../contrib/langid/lib/" regex=".*\.jar" />-->
+<!--  <lib dir="../../../dist/" regex="solr-langid-\d.*\.jar" />-->
 
-  <lib dir="../../../contrib/velocity/lib" regex=".*\.jar" />
-  <lib dir="../../../dist/" regex="solr-velocity-\d.*\.jar" />
+<!--  <lib dir="../../../contrib/velocity/lib" regex=".*\.jar" />-->
+<!--  <lib dir="../../../dist/" regex="solr-velocity-\d.*\.jar" />-->
 
   <!-- an exact 'path' can be used instead of a 'dir' to specify a 
        specific jar file.  This will cause a serious error to be logged 
@@ -520,7 +521,7 @@
            autowarmCount - the number of entries to prepopulate from
                and old cache.  
       -->
-    <filterCache class="solr.FastLRUCache"
+    <filterCache class="solr.CaffeineCache"
                  size="512"
                  initialSize="512"
                  autowarmCount="0"/>
@@ -530,7 +531,7 @@
          Caches results of searches - ordered lists of document ids
          (DocList) based on a query, a sort, and the range of documents requested.  
       -->
-    <queryResultCache class="solr.LRUCache"
+    <queryResultCache class="solr.CaffeineCache"
                      size="512"
                      initialSize="512"
                      autowarmCount="0"/>
@@ -541,14 +542,14 @@
          document).  Since Lucene internal document ids are transient,
          this cache will not be autowarmed.  
       -->
-    <documentCache class="solr.LRUCache"
+    <documentCache class="solr.CaffeineCache"
                    size="512"
                    initialSize="512"
                    autowarmCount="0"/>
     
     <!-- custom cache currently used by block join --> 
     <cache name="perSegFilter"
-      class="solr.search.LRUCache"
+      class="solr.search.CaffeineCache"
       size="10"
       initialSize="0"
       autowarmCount="10"
