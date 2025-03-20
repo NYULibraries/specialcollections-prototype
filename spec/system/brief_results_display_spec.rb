@@ -30,6 +30,9 @@ describe "Brief Results Display" do
         within("dd.blacklight-abstract_ssm") { expect(page).to have_content("Mark Bloch (born 1956) is an American artist and writer who uses visuals and text to explore ideas of long-distance communication.") }
         within("dd.blacklight-repository_ssi") { expect(page).to have_content("The Fales Library & Special Collections") }
         within("dd.blacklight-unitid_ssm") { expect(page).to have_content("MSS.170") }
+
+        abstract = find("dd.blacklight-abstract_ssm")
+        expect(abstract.text.length).to be <= 450
       end
     end
   end
