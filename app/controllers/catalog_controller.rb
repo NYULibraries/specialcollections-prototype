@@ -34,20 +34,20 @@ class CatalogController < ApplicationController
     # default advanced config values
     config.advanced_search ||= Blacklight::OpenStructWithHashAccess.new
     config.advanced_search[:enabled] = true
-    config.advanced_search[:qt] ||= 'advanced'
+    config.advanced_search[:qt] ||= "advanced"
     config.advanced_search[:form_solr_parameters] = {
       "facet" => true,
-      "facet.field" => advanced_facet_fields.map {|facet| solr_name(facet[:field], :facetable)},
+      "facet.field" => advanced_facet_fields.map { |facet| solr_name(facet[:field], :facetable) },
       "facet.limit" => -1, # return all facet values
       "facet.sort" => "count" # sort by byte order of values
     }
-    config.advanced_search[:query_parser] ||= 'dismax'
+    config.advanced_search[:query_parser] ||= "dismax"
 
     # solr path which will be added to solr base url before the other solr params.
-    #config.solr_path = 'select'
+    # config.solr_path = 'select'
 
     # items to show per page, each number in the array represent another option to choose from.
-    #config.per_page = [10,20,50,100]
+    # config.per_page = [10,20,50,100]
 
     # solr field configuration for search results/index views
     config.index.title_field = solr_name("heading", :displayable)
@@ -56,8 +56,8 @@ class CatalogController < ApplicationController
     config.add_field_configuration_to_solr_request!
 
     # solr field configuration for document/show views
-    #config.show.title_field = 'title_display'
-    #config.show.display_type_field = 'format'
+    # config.show.title_field = 'title_display'
+    # config.show.display_type_field = 'format'
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
@@ -103,15 +103,15 @@ class CatalogController < ApplicationController
 
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
-    config.add_index_field solr_name("format",            :displayable),  :label => "Format", :helper_method => :render_field_item
-    config.add_index_field solr_name("heading",           :displayable),  :label => "Contained in", :helper_method => :render_contained_in_links, unless: :is_collection?
-    config.add_index_field solr_name("unitdate",          :displayable),  :label => "Date range", :helper_method => :render_field_item
-    config.add_index_field solr_name("abstract",          :displayable),  :label => "Abstract", :helper_method => :render_field_item
-    config.add_index_field solr_name("collection",        :displayable),  :label => "Archival Collection", :helper_method => :render_parent_facet_link
+    config.add_index_field solr_name("format",            :displayable),  label: "Format", helper_method: :render_field_item
+    config.add_index_field solr_name("heading",           :displayable),  label: "Contained in", helper_method: :render_contained_in_links, unless: :is_collection?
+    config.add_index_field solr_name("unitdate",          :displayable),  label: "Date range", helper_method: :render_field_item
+    config.add_index_field solr_name("abstract",          :displayable),  label: "Abstract", helper_method: :render_field_item
+    config.add_index_field solr_name("collection",        :displayable),  label: "Archival Collection", helper_method: :render_parent_facet_link
     config.add_index_field solr_name("repository",        :stored_sortable), label: "Library", helper_method: :render_repository_link
-    config.add_index_field solr_name("unitid",            :displayable),  :label => "Call no", :helper_method => :render_field_item, if: :is_collection?
-    config.add_index_field solr_name("collection_unitid", :displayable),  :label => "Collection call no", :helper_method => :render_field_item, unless: :is_collection?
-    config.add_index_field solr_name("location",          :displayable),  :label => "Location", :helper_method => :render_field_item
+    config.add_index_field solr_name("unitid",            :displayable),  label: "Call no", helper_method: :render_field_item, if: :is_collection?
+    config.add_index_field solr_name("collection_unitid", :displayable),  label: "Collection call no", helper_method: :render_field_item, unless: :is_collection?
+    config.add_index_field solr_name("location",          :displayable),  label: "Location", helper_method: :render_field_item
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
@@ -165,30 +165,30 @@ class CatalogController < ApplicationController
     #
 
     config.add_search_field("all_fields",
-                            :label => "All Fields",
-                            :advanced_parse => false,
-                            :include_in_advanced_search => true
+                            label: "All Fields",
+                            advanced_parse: false,
+                            include_in_advanced_search: true
     )
 
     ##
     # Add repository field query from config file
     Findingaids::Repositories.repositories.each do |coll|
       config.add_search_field(coll.last["url_safe_display"],
-                              :label => coll.last["display"],
-                              :solr_parameters => { :fq => "#{solr_name("repository", :stored_sortable)}:#{(coll.last["admin_code"].present?) ? coll.last["admin_code"].to_s : '*'}" },
-                              :advanced_parse => false,
-                              :include_in_advanced_search => false
+                              label: coll.last["display"],
+                              solr_parameters: { fq: "#{solr_name("repository", :stored_sortable)}:#{(coll.last["admin_code"].present?) ? coll.last["admin_code"].to_s : '*'}" },
+                              advanced_parse: false,
+                              include_in_advanced_search: false
       )
     end
 
     ##
     # Add advanced search fields
     advanced_search_fields.each do |field|
-      config.add_search_field(solr_name(field[:field],:searchable),
-                              :label => field[:label],
-                              :include_in_advanced_search => true,
-                              :include_in_simple_select => false,
-                              :solr_parameters => { :qf => (field[:qf] || solr_name(field[:field], :searchable)) }
+      config.add_search_field(solr_name(field[:field], :searchable),
+                              label: field[:label],
+                              include_in_advanced_search: true,
+                              include_in_simple_select: false,
+                              solr_parameters: { qf: (field[:qf] || solr_name(field[:field], :searchable)) }
       )
     end
 
@@ -200,7 +200,7 @@ class CatalogController < ApplicationController
     # config.add_sort_field 'pub_date_sort desc, title_sort asc', label: 'year'
     # config.add_sort_field 'author_sort asc, title_sort asc', label: 'author'
     # config.add_sort_field 'title_sort asc, pub_date_sort desc', label: 'title'
-    config.add_sort_field "score desc",                   :label => "relevance"
+    config.add_sort_field "score desc",                   label: "relevance"
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
@@ -209,19 +209,19 @@ class CatalogController < ApplicationController
     # Configuration for autocomplete suggestor
     # TODO: Do we ever want this enabled? Currently doesn't work with Solr configuration
     config.autocomplete_enabled = false
-    config.autocomplete_path = 'suggest'
+    config.autocomplete_path = "suggest"
   end
 
   # We need to override Blacklight's `index` in order to remediate the Solr response.
   def index
     @response = Blacklight::SearchService.new(config: CatalogController.blacklight_config, user_params: params).search_results
 
-    #remediate_solr_response
+    # remediate_solr_response
 
     respond_to do |format|
       format.html { store_preferred_view }
-      format.rss  { render :layout => false }
-      format.atom { render :layout => false }
+      format.rss  { render layout: false }
+      format.atom { render layout: false }
       format.json do
         @presenter = Blacklight::JsonPresenter.new(@response, blacklight_config)
       end

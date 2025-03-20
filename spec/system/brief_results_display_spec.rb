@@ -1,6 +1,19 @@
 require "rails_helper"
 
 describe "Brief Results Display", type: :system do
+  before(:all) do
+    @solr = RSolr.connect(url: ENV['SOLR_URL'])
+
+    xml_file = Rails.root.join('spec', 'fixtures', 'solr', 'bloch.xml')
+    xml_data = File.read(xml_file)
+
+    response = @solr.update(data: xml_data, headers: { 'Content-Type' => 'text/xml' })
+
+    raise "Failed to load data into Solr: #{response['responseHeader']['status']}" if response['responseHeader']['status'] != 0
+
+    @solr.commit
+  end
+
   it "displays appropriate fields at the collection level" do
     visit "/"
 

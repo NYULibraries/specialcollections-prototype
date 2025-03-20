@@ -29,7 +29,7 @@ module Findingaids
             "#{solr_name("unitdate", :searchable)}",
             "#{solr_name("name", :searchable)}",
             "#{solr_name("subject", :searchable)}^60.0",
-            "#{solr_name("abstract", :searchable)}^55.0" ,
+            "#{solr_name("abstract", :searchable)}^55.0",
             "#{solr_name("creator", :searchable)}^60.0",
             "#{solr_name("scopecontent", :searchable)}^60.0",
             "#{solr_name("bioghist", :searchable)}^55.0",

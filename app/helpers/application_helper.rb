@@ -1,9 +1,8 @@
 module ApplicationHelper
-
   # Link to the finding aid with the passed in label
   def link_to_findingaid(doc, label = nil, opts = {})
     url = get_url_for_findingaid_from_document(doc)
-    link_to (label || url), url, opts.merge({ :target => "_blank" })
+    link_to (label || url), url, opts.merge({ target: "_blank" })
   end
 
 
@@ -51,8 +50,8 @@ module ApplicationHelper
 
   # Create url for finding aid using the legacy URL structure
   def url_for_legacy_findingaid(repository, eadid, page = nil, anchor = nil)
-    page = [page, ENV['FINDINGAIDS_FULL_DEFAULT_EXTENSION']].join(".") unless page.nil?
-    "http://#{ENV['FINDINGAIDS_FULL_HOST']}#{[ENV['FINDINGAIDS_FULL_PATH'], repository, eadid, page].join("/")}#{"#" + anchor unless anchor.nil?}"
+    page = [ page, ENV["FINDINGAIDS_FULL_DEFAULT_EXTENSION"] ].join(".") unless page.nil?
+    "http://#{ENV['FINDINGAIDS_FULL_HOST']}#{[ ENV['FINDINGAIDS_FULL_PATH'], repository, eadid, page ].join("/")}#{"#" + anchor unless anchor.nil?}"
   end
 
   # Create url for finding aid using the 2022-migration URL structure
@@ -60,18 +59,18 @@ module ApplicationHelper
     # https://findingaids.library.nyu.edu/fales/mss_208/
     # https://findingaids.library.nyu.edu/fales/mss_208/contents/aspace_ref121/
     # https://findingaids.library.nyu.edu/fales/mss_208/contents/aspace_ref121/#aspace_ref127
-    "https://#{ENV['FINDINGAIDS_2022_FULL_HOST']}/#{[repository, eadid].join("/")}/#{["contents", page].join("/") + "/" unless page.nil?}#{"#" + anchor unless anchor.nil?}"
+    "https://#{ENV['FINDINGAIDS_2022_FULL_HOST']}/#{[ repository, eadid ].join("/")}/#{[ "contents", page ].join("/") + "/" unless page.nil?}#{"#" + anchor unless anchor.nil?}"
   end
 
   def default_url_for_2022_findingaid(repository, eadid, anchor = nil)
     # https://findingaids.library.nyu.edu/fales/mss_208/all/
     # https://findingaids.library.nyu.edu/fales/mss_208/all/#aspace_ref127
-    "https://#{ENV['FINDINGAIDS_2022_FULL_HOST']}/#{[repository, eadid].join("/")}/#{"all" + "/"}#{"#" + anchor unless anchor.nil?}"
+    "https://#{ENV['FINDINGAIDS_2022_FULL_HOST']}/#{[ repository, eadid ].join("/")}/#{"all" + "/"}#{"#" + anchor unless anchor.nil?}"
   end
 
   # Does the url actually return a valid page
   def url_exists?(url)
-    Rails.cache.fetch "url_exists_#{url}", :expires_in => 1.month do
+    Rails.cache.fetch "url_exists_#{url}", expires_in: 1.month do
       begin
         Faraday.head(url).status == 200
       rescue
@@ -100,14 +99,14 @@ module ApplicationHelper
   # just return false in that case so we know not to render it
   def current_repository_home_text?
     begin
-      I18n.translate!("repositories.#{current_repository_url}.home_text", :raise => true)
+      I18n.translate!("repositories.#{current_repository_url}.home_text", raise: true)
     rescue
       false
     end
   end
 
   def get_facet_label_from_key(key)
-    facet_fields.select{|f| f[:label] == facet_field_label(key)}.try(:first).try(:[], :field)
+    facet_fields.select { |f| f[:label] == facet_field_label(key) }.try(:first).try(:[], :field)
   end
 
   def maintenance_mode?

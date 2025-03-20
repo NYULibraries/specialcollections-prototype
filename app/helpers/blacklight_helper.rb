@@ -6,9 +6,9 @@ module BlacklightHelper
   include Findingaids::Solr::CatalogHelpers::ClassMethods
 
   # Change link to document to link out to external guide
-  def link_to_document(doc, field, opts={:counter => nil})
-    if(doc.unittitle.blank?)
-      label = t('search.brief_results.link_text.no_title')
+  def link_to_document(doc, field, opts = { counter: nil })
+    if doc.unittitle.blank?
+      label = t("search.brief_results.link_text.no_title")
     else
       field ||= doc.unittitle
       # presenter_obj = index_presenter_class(doc).new(doc, self)
@@ -18,13 +18,13 @@ module BlacklightHelper
   end
 
   def sanitize_search_params(params)
-    params.permit(:q, :f => whitelisted_facets)
+    params.permit(:q, f: whitelisted_facets)
   rescue NoMethodError => e
     params
   end
 
   def whitelisted_facets
-    @whitelisted_facets ||= Hash[facet_fields.map(&:first).map(&:last).map {|f| ["#{f}_sim".to_sym, []]}]
+    @whitelisted_facets ||= Hash[facet_fields.map(&:first).map(&:last).map { |f| [ "#{f}_sim".to_sym, [] ] }]
   end
 
   def render_bookmarks_control?
@@ -45,8 +45,8 @@ module BlacklightHelper
   # Overridden to account for name in format {:default=>"Keyword"}
   def render_filter_name(name)
     return "".html_safe if name.blank?
-    name = (name.is_a?Hash) ? name.try(:first).try(:last) : name
-    content_tag(:span, t('blacklight.search.filters.label', :label => name), :class => 'filterName')
+    name = (name.is_a? Hash) ? name.try(:first).try(:last) : name
+    content_tag(:span, t("blacklight.search.filters.label", label: name), class: "filterName")
   end
 
   protected
@@ -56,5 +56,4 @@ module BlacklightHelper
     def blacklight_configuration_context
       @blacklight_configuration_context ||= Blacklight::Configuration::Context.new(self)
     end
-
 end

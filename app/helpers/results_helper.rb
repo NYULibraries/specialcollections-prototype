@@ -1,5 +1,4 @@
 module ResultsHelper
-
   ##
   # Render field value, and join as string if it's an array
   def render_field_item(doc)
@@ -13,20 +12,20 @@ module ResultsHelper
     collection = doc[:document].collection
     item_title = content_tag(:span, sanitize_html(doc[:document].unittitle), class: "unittitle")
 
-    [link_to_collection(collection), links_to_series(series, collection), item_title].reject(&:blank?).join(" >> ").html_safe
+    [ link_to_collection(collection), links_to_series(series, collection), item_title ].reject(&:blank?).join(" >> ").html_safe
   end
 
   ##
   # Get a clean link to collection
   def link_to_collection(collection)
-    link_to(collection, add_clean_facet_params_and_redirect([collection_facet, collection]))
+    link_to(collection, add_clean_facet_params_and_redirect([ collection_facet, collection ]))
   end
 
   ##
   # Get a clean link to all series in array
   def links_to_series(series, collection, links_to_series = [])
     series.each do |ser|
-      links_to_series << link_to(ser, add_clean_facet_params_and_redirect([series_facet, ser], [collection_facet, collection]))
+      links_to_series << link_to(ser, add_clean_facet_params_and_redirect([ series_facet, ser ], [ collection_facet, collection ]))
     end
     links_to_series
   end
@@ -34,7 +33,7 @@ module ResultsHelper
   ##
   # Strip whitespace form field and any HTML that isn't approved
   def sanitize_html(field)
-    sanitize(field.strip, tags: %w(strong em)).html_safe
+    sanitize(field.strip, tags: %w[strong em]).html_safe
   end
 
   ##
@@ -50,7 +49,7 @@ module ResultsHelper
   end
 
   def render_repository_facet_link(doc)
-    r = repositories.find{|key,hash| hash["admin_code"] == doc}
+    r = repositories.find { |key, hash| hash["admin_code"] == doc }
     if r.nil?
       "missing repository for: #{doc}"
     else
@@ -64,11 +63,11 @@ module ResultsHelper
   def render_repository_link(doc)
     repos_id = Solrizer.solr_name("repository", :stored_sortable)
     if doc.is_a?(Hash) && doc[:document].to_h.present? && doc[:document][repos_id].present?
-      link_to_repository repositories.find{|key,hash| hash["admin_code"] == doc[:document][repos_id]}[1]["url"]
+      link_to_repository repositories.find { |key, hash| hash["admin_code"] == doc[:document][repos_id] }[1]["url"]
     end
   end
 
-   ##
+  ##
   # Render clean facet link to parent collection/series
   def render_parent_facet_link(doc)
     if doc[:document].is_archival_collection?
@@ -94,7 +93,7 @@ module ResultsHelper
     unless doc[:document].unittitle.blank?
       render_series_facet_link(doc)
     else
-      content_tag(:span,t('search.brief_results.link_text.no_parents_title.series'),class:"search_within")
+      content_tag(:span, t("search.brief_results.link_text.no_parents_title.series"), class: "search_within")
     end
   end
 
@@ -102,24 +101,24 @@ module ResultsHelper
   # Render clean facet link to collection
   def render_collection_facet_link(doc)
     item = doc[:document][doc[:field]].first
-    local_params = add_clean_facet_params_and_redirect([collection_facet, item])
-    link_to t('search.brief_results.link_text.collection'), local_params, :class => "search_within"
+    local_params = add_clean_facet_params_and_redirect([ collection_facet, item ])
+    link_to t("search.brief_results.link_text.collection"), local_params, class: "search_within"
   end
 
   ##
-  #Render clean facet link to series
+  # Render clean facet link to series
   def render_series_facet_link(doc)
     collection = doc[:document][doc[:field]].first
     ser = doc[:document][:unittitle_ssm].first
-    local_params = add_clean_facet_params_and_redirect([series_facet,ser],[collection_facet,collection])
-    link_to t('search.brief_results.link_text.series'),local_params , :class => "search_within"
+    local_params = add_clean_facet_params_and_redirect([ series_facet, ser ], [ collection_facet, collection ])
+    link_to t("search.brief_results.link_text.series"), local_params, class: "search_within"
   end
 
   ##
-  #Render instructions to request item
+  # Render instructions to request item
   def render_request_item_istructions
     item = []
-    item << content_tag(:span,t('search.brief_results.link_text.other'),class:"search_within")
+    item << content_tag(:span, t("search.brief_results.link_text.other"), class: "search_within")
     item.join("").html_safe
   end
 
@@ -189,5 +188,4 @@ module ResultsHelper
   def reset_facet_params(source_params)
     Blacklight::Parameters.sanitize(source_params.except(:f)).except(:page, :counter)
   end
-
 end

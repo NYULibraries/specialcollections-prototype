@@ -1,32 +1,32 @@
 # frozen_string_literal: true
-class SolrDocument
 
+class SolrDocument
   include Blacklight::Solr::Document
 
   # self.unique_key = 'id'
 
   # Email uses the semantic field mappings below to generate the body of an email.
-  SolrDocument.use_extension( Blacklight::Document::Email )
+  SolrDocument.use_extension(Blacklight::Document::Email)
 
   # SMS uses the semantic field mappings below to generate the body of an SMS email.
-  SolrDocument.use_extension( Blacklight::Document::Sms )
+  SolrDocument.use_extension(Blacklight::Document::Sms)
 
   # DublinCore uses the semantic field mappings below to assemble an OAI-compliant Dublin Core document
   # Semantic mappings of solr stored fields. Fields may be multi or
   # single valued. See Blacklight::Document::SemanticFields#field_semantics
   # and Blacklight::Document::SemanticFields#to_semantic_values
   # Recommendation: Use field names from Dublin Core
-  use_extension( Blacklight::Document::DublinCore)
+  use_extension(Blacklight::Document::DublinCore)
 
   # Turn "Archival Object" to "archival_object"
   def normalized_format
-    self[Solrizer.solr_name("format", :displayable)].first.downcase.gsub(/\s/,"_")
+    self[Solrizer.solr_name("format", :displayable)].first.downcase.gsub(/\s/, "_")
   end
 
   # Print formatted citation
   def export_as_ead_citation_txt
     # Array of citation fields eliminating blank and nil ones
-    citation_fields = ["#{"<strong>"+unittitle+"</strong>" if unittitle.present?}#{", #{unitdate}" if unitdate.present?}", "#{unitid if self.is_archival_collection?}", "#{collection_unitid unless self.is_archival_collection?}", "#{collection unless is_archival_collection?}", "#{location.join("; ").gsub(/,/,";")}", "#{library}"] - ["",nil]
+    citation_fields = [ "#{"<strong>"+unittitle+"</strong>" if unittitle.present?}#{", #{unitdate}" if unitdate.present?}", "#{unitid if self.is_archival_collection?}", "#{collection_unitid unless self.is_archival_collection?}", "#{collection unless is_archival_collection?}", "#{location.join("; ").gsub(/,/, ";")}", "#{library}" ] - [ "", nil ]
     citation_fields.join("; ")
   end
 
@@ -68,7 +68,7 @@ class SolrDocument
 
   # Attributes you're allowed to call as instance methods
   def whitelisted_attributes
-    @whitelisted_attributes ||= [:unittitle, :unitdate, :unitid, :collection_unitid, :collection, :location, :parent_unittitles, :repository]
+    @whitelisted_attributes ||= [ :unittitle, :unitdate, :unitid, :collection_unitid, :collection, :location, :parent_unittitles, :repository ]
   end
 
   ##

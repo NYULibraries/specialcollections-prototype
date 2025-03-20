@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   mount Blacklight::Engine => "/"
-  mount BlacklightAdvancedSearch::Engine => '/'
+  mount BlacklightAdvancedSearch::Engine => "/"
 
   root to: "catalog#index"
   concern :searchable, Blacklight::Routes::Searchable.new
@@ -26,7 +26,7 @@ Rails.application.routes.draw do
 
   # Create named routes for each collection specified in the Repositories Class
   Findingaids::Repositories.repositories.each do |coll|
-    get "#{coll[1]['url']}" => "catalog#index", :search_field => "#{coll[1]['url_safe_display']}", :repository => "#{coll[1]['display']}", :f => { :repository_sim => ["#{coll[1]['admin_code']}"] }
+    get "#{coll[1]['url']}" => "catalog#index", :search_field => "#{coll[1]['url_safe_display']}", :repository => "#{coll[1]['display']}", :f => { repository_sim: [ "#{coll[1]['admin_code']}" ] }
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
