@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe "homepage", type: :system do
+describe "homepage" do
   it "displays a welcome message" do
     visit "/"
 
