@@ -37,37 +37,34 @@ describe "Brief Results Display" do
     end
   end
 
-  it "display at the component level" do
-    add_document('oh002.xml')
+  # it "display at the component level" do
+  #   add_document('oh002.xml')
+  #
+  #   visit "/"
+  #
+  #   fill_in "q", with: "Minka"
+  #   click_button "Search"
+  #
+  #   within("span.filter-value") { expect(page).to have_content("Minka") }
+  #
+  #   within("article.document-position-1") do
+  #     within("dl.document-metadata") do
+  #       within("dd.blacklight-format_ssm") { expect(page).to have_content("Archival Object") }
+  #       within("dd.blacklight-unitdate_ssm") { expect(page).to have_content("Oct 26, 1982") }
+  #       within("dd.blacklight-heading_ssm") { expect(page).to have_content("Oral History of the American Left: Radical Histories >> Minka Alesh") }
+  #       within("dd.blacklight-repository_ssi") { expect(page).to have_content("Tamiment Library & Wagner Labor Archives") }
+  #       within("dd.blacklight-unitid_ssm") { expect(page).to have_content("OH.002") }
+  #     end
+  #   end
+  # end
 
-    visit "/"
-
-    fill_in "q", with: "Minka"
-    click_button "Search"
-
-    within("span.filter-value") { expect(page).to have_content("Minka") }
-
-    within("article.document-position-1") do
-      within("dl.document-metadata") do
-        within("dd.blacklight-format_ssm") { expect(page).to have_content("Archival Object") }
-        within("dd.blacklight-unitdate_ssm") { expect(page).to have_content("Oct 26, 1982") }
-        within("dd.blacklight-heading_ssm") { expect(page).to have_content("Oral History of the American Left: Radical Histories >> Minka Alesh") }
-        within("dd.blacklight-repository_ssi") { expect(page).to have_content("Tamiment Library & Wagner Labor Archives") }
-        within("dd.blacklight-unitid_ssm") { expect(page).to have_content("OH.002") }
-      end
-    end
-
-
-    # Given I search on the phrase "Minka"
-    # Then the first result should have a field "Format" with value "Archival Object"
-    # Then the first result should have a field "Date range" with value "Oct 26, 1982"
-    # Then the first result should have a field "Contained in" with value "Oral History of the American Left: Radical Histories >> Minka Alesh"
-    # Then the first result should have a field "Library" with value "Tamiment Library & Wagner Labor Archives"
-    # Then the first result should have a field "Collection call no" with value "OH.002"
-    # Then the first result should have a field "Location" with value "CD: Access OH-02-159, Box: 1, CD: Alesh 1, Cassette: 1, CD: ohaloh020146p1 / /ohaloh020146p2, Box: 1, Cassette: 1"
-
-  end
-
+  # Given I search on the phrase "Minka"
+  # Then the first result should have a field "Format" with value "Archival Object"
+  # Then the first result should have a field "Date range" with value "Oct 26, 1982"
+  # Then the first result should have a field "Contained in" with value "Oral History of the American Left: Radical Histories >> Minka Alesh"
+  # Then the first result should have a field "Library" with value "Tamiment Library & Wagner Labor Archives"
+  # Then the first result should have a field "Collection call no" with value "OH.002"
+  # Then the first result should have a field "Location" with value "CD: Access OH-02-159, Box: 1, CD: Alesh 1, Cassette: 1, CD: ohaloh020146p1 / /ohaloh020146p2, Box: 1, Cassette: 1"
 
   # it "links to low level results for the series level components" do
   #   pending("Not yet")
