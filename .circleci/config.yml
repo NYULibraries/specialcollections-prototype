@@ -31,6 +31,8 @@ jobs:
       - run:
           name: Test suite
           command: bundle exec rake sc:test
+      - store_artifacts:
+          path: tmp/capybara
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
