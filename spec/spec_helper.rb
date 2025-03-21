@@ -47,6 +47,14 @@ RSpec.configure do |config|
   # triggering implicit auto-inclusion in groups with matching metadata.
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
+  Capybara.register_driver :selenium do |app|
+    options = Selenium::WebDriver::Chrome::Options.new
+    options.add_emulation(device_metrics: { width: 1280, height: 1024, touch: false })
+    Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+  end
+
+  Capybara.default_driver = :selenium
+
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin

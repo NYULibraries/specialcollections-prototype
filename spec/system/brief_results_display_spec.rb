@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe "Brief Results Display" do
+describe "Brief Results Display", js: true do
   it "displays appropriate fields at the collection level" do
     add_document('bloch.xml')
 
