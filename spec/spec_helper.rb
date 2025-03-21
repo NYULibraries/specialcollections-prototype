@@ -47,13 +47,13 @@ RSpec.configure do |config|
   # triggering implicit auto-inclusion in groups with matching metadata.
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
-  Capybara.register_driver :selenium do |app|
-    options = Selenium::WebDriver::Chrome::Options.new
-    options.add_emulation(device_metrics: { width: 1280, height: 1024, touch: false })
-    Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
-  end
+  Capybara.register_driver :headless_chrome do |app|
+    capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+      chromeOptions: { args: %w[headless disable-gpu window-size=1024,768] }
+    )
 
-  Capybara.default_driver = :selenium
+    Capybara::Selenium::Driver.new(app, browser: :chrome, desired_capabilities: capabilities)
+  end
 
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
