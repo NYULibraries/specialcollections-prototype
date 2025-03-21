@@ -29,6 +29,11 @@ jobs:
           command: bundle -v
       - ruby/install-deps
       - run:
+          name: Set screen resolution
+          command: |
+            export DISPLAY=:0
+            Xvfb :0 -screen 0 1920x1080x24 &
+      - run:
           name: Test suite
           command: bundle exec rake sc:test
       - store_artifacts:
