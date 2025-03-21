@@ -1,6 +1,18 @@
-
 namespace :sc do
   SHARED_SOLR_OPTIONS = { managed: true, verbose: true, persist: false, download_dir: "tmp", version: "9.6.1" }
+
+  def add_document(filename)
+    solr = RSolr.connect(url: ENV["SOLR_URL"])
+
+    response = solr.update(
+      data: File.read("spec/fixtures/files/#{filename}"),
+      headers: { "Content-Type" => "text/xml" }
+    )
+
+    raise "Failed to load data into Solr: #{response['responseHeader']['status']}" if response["responseHeader"]["status"] != 0
+
+    solr.commit
+  end
 
   desc "Run Solr and Blacklight for interactive development"
   task server: :environment do
@@ -30,5 +42,13 @@ namespace :sc do
         Rake::Task["default"].invoke
       end
     end
+  end
+
+  desc "Load data into development environment"
+  task load: :environment do
+    ENV["SOLR_URL"] = "http://localhost:8983/solr/development-core"
+
+    add_document("bloch.xml")
+    add_document("oh002.xml")
   end
 end
