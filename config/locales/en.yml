@@ -1,31 +1,71 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  maintenance_alert: This site is undergoing maintenance. During this time, searches may only provide partial results. We encourage you to repeat your search after September 2nd, 2015 to ensure you find all of the archival materials that match your query.
+  application_title: "Archival Collections"
+  repositories:
+    fales:
+      home_text: The Fales Library & Special Collections, comprising 350,000 volumes of book and print items, over 11,000 linear feet of archive and manuscript materials, and about 90,000 audiovisual elements, houses the Fales Collection of rare books and manuscripts in English and American literature, the Downtown Collection, the Food and Cookery Collection, the Riot Grrrl Collection, and the general Special Collections of the NYU Libraries.
+      url: https://library.nyu.edu/locations/special-collections-center/
+    tamiment:
+      home_text: The Tamiment Library and Robert F. Wagner Labor Archives collects material in all formats documenting the history of labor, the Left, political radicalism, and social movements in the United States, with particular strengths in communism, anarchism, and socialism.  It is also the repository for the Archives of Irish America and the Abraham Lincoln Brigade Archives.
+      url: https://library.nyu.edu/locations/special-collections-center/
+    universityarchives:
+      home_text: The New York University Archives serves as the final repository for the historical records of NYU. Its primary purpose is to document the history of the University and to provide source material for administrators, faculty, students, alumni, and other members of the University community, as well as scholars, authors, and other interested persons who seek to evaluate the impact of the University's activities on the history of American social, cultural, and intellectual development.
+      url: https://library.nyu.edu/locations/special-collections-center/
+    rism:
+      home_text: The RISM Research Collections and Archives have been transferred to the New York University Archives.
+      url: https://library.nyu.edu/locations/special-collections-center/
+    poly:
+      url: https://library.nyu.edu/locations/poly-archives-special-collections/
+    nyhistory:
+      url: https://www.nyhistory.org/library
+    brooklynhistory:
+      home_text: The Center for Brooklyn History collects, preserves, and provides access to the most expansive collection of Brooklyn history and life in the world. The combined collections that comprise the new Center for Brooklyn History's holdings include over 250,000 photographs, 37,000 books, 1,800 archival collections, 2,500 maps and atlases, 5,700 artifacts, 300 paintings, 1,400 oral history interviews, and more. The collections foster new and cutting-edge scholarship, support public learning and research, and enrich CBH's exhibitions, educational activities, and public programming.
+      url: https://www.bklynlibrary.org/center-for-brooklyn-history
+    arabartarchive:
+      home_text: The Arab Art Archive works with artists, their families, collections, galleries, arts organizations, and other institutions throughout the region and around the world to digitize a range of documentary material pertaining to the history of modern art in the Arab countries.
+      url: https://nyuad.nyu.edu/en/research/faculty-labs-and-projects/al-mawrid.html
+
+  facets:
+    help:
+      repository: "View materials from one special collection (e.g. Fales Library or The New-York Historical)."
+      dao: "View digitized and digital materials that are available online."
+      creator: "View materials by the person, organization, or family who created or assembled them."
+      date_range: "View results from a select time period."
+      subject: "View results related to a topic (e.g. 'labor unions' or 'ships')."
+      name: "View results related to a person, organization, or family."
+      place: "View results related to a geographic location (e.g. 'Washington Square' or 'Spain')."
+      language: "View results by language of the materials."
+      collection: "View results only within a single archival collection."
+      format: "View only collection level, series level, or lower (e.g. file or item) level descriptions."
+  search:
+    advanced:
+      link_text: "Advanced Search"
+    simple:
+      link_text: "&laquo; Return to Basic Search"
+    brief_results:
+      popovers:
+        search_within: Search descriptions of materials in this collection.
+        archival_collection: See a full description and inventory of this collection.
+        archival_series_and_object: View in context of the full collection inventory.
+        library: View descriptions of materials held by this library.
+      link_text:
+        collection: "Search all archival materials within this collection"
+        series: "Search all archival materials within this series"
+        other: "To request this item, please note the following information"
+        no_title: "No Title"
+        no_parents_title:
+          series: "Series doesn't have unittitle you can't search within it"
+  help:
+    title: 'Need Help?'
+    search_tips:
+      title: 'Search Tips'
+    contact_information:
+      title: 'Special Collections Contact Information and Hours'
+  bookmarks:
+    help:
+      email: "Email a list of my bookmarks"
+      citation: "Display a list of my bookmarks"
+  Series sim: Series
+  ead_indexer:
+    fields:
+      dao: "Online Access"

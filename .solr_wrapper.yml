@@ -3,4 +3,4 @@
 version: 9.6.1
 collection:
   dir: solr/conf/
-  name: blacklight-core
+  name: development-core
