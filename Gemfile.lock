@@ -141,6 +141,11 @@ GEM
     et-orbi (1.2.11)
       tzinfo
     execjs (2.10.0)
+    factory_bot (6.5.1)
+      activesupport (>= 6.1.0)
+    factory_bot_rails (6.4.4)
+      factory_bot (~> 6.5)
+      railties (>= 5.0.0)
     faraday (2.12.2)
       faraday-net_http (>= 2.0, < 3.5)
       json
@@ -353,6 +358,9 @@ GEM
     rspec-expectations (3.13.3)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
+    rspec-its (2.0.0)
+      rspec-core (>= 3.13.0)
+      rspec-expectations (>= 3.13.0)
     rspec-mocks (3.13.2)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
@@ -521,6 +529,7 @@ DEPENDENCIES
   cssbundling-rails
   debug
   dotenv
+  factory_bot_rails
   importmap-rails
   jbuilder
   kamal
@@ -528,6 +537,7 @@ DEPENDENCIES
   puma (>= 5.0)
   rails (~> 8.0.2)
   rsolr (>= 1.0, < 3)
+  rspec-its
   rspec-rails (~> 7.1.1)
   rubocop-rails-omakase
   selenium-webdriver

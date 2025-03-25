@@ -1,4 +1,8 @@
 module ApplicationHelper
+  def blacklight_config
+    CatalogController.blacklight_config
+  end
+
   # Link to the finding aid with the passed in label
   def link_to_findingaid(doc, label = nil, opts = {})
     url = get_url_for_findingaid_from_document(doc)
@@ -8,8 +12,6 @@ module ApplicationHelper
 
   # Abstract actually constructing the url to the finding aids document
   def get_url_for_findingaid_from_document(doc)
-    # TODO: Confirm that this flag can just be hardcoded going forward
-    # ENV['FINDINGAIDS_2022_MIGRATION'] ? get_url_for_2022_findingaid_from_document(doc) : get_url_for_legacy_findingaid_from_document(doc)
     get_url_for_2022_findingaid_from_document(doc)
   end
 
@@ -46,12 +48,6 @@ module ApplicationHelper
     # If implied parent structure is correct, use it
     # If not, return custom default
     url_exists?(url) ? url : default_url_for_2022_findingaid(repository, eadid, doc[:ref_ssi])
-  end
-
-  # Create url for finding aid using the legacy URL structure
-  def url_for_legacy_findingaid(repository, eadid, page = nil, anchor = nil)
-    page = [ page, ENV["FINDINGAIDS_FULL_DEFAULT_EXTENSION"] ].join(".") unless page.nil?
-    "http://#{ENV['FINDINGAIDS_FULL_HOST']}#{[ ENV['FINDINGAIDS_FULL_PATH'], repository, eadid, page ].join("/")}#{"#" + anchor unless anchor.nil?}"
   end
 
   # Create url for finding aid using the 2022-migration URL structure
