@@ -35,14 +35,13 @@ module BlacklightHelper
     has_user_authentication_provider? and current_or_guest_user.present?
   end
 
-  # TODO: Where is this used?
-  # def default_search_field_path
-  #   url_for(search_state.params_for_search(
-  #     search_field: blacklight_config.default_search_field.key,
-  #     repository: nil,
-  #     f: nil
-  #   ))
-  # end
+  def default_search_field_path
+    url_for(search_state.params_for_search(
+      search_field: blacklight_config.default_search_field.key,
+      repository: nil,
+      f: nil
+    ))
+  end
 
   ##
   # Render the name of the facet
