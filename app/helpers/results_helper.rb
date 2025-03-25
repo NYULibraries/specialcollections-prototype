@@ -1,4 +1,8 @@
 module ResultsHelper
+  def blacklight_config
+    CatalogController.blacklight_config
+  end
+
   ##
   # Render field value, and join as string if it's an array
   def render_field_item(doc)

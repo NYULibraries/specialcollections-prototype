@@ -68,6 +68,8 @@ gem "blacklight_advanced_search"
 
 group :development, :test do
   gem "dotenv"
+  gem "factory_bot_rails"
+  gem "rspec-its"
   gem "rspec-rails", "~> 7.1.1"
   gem "solr_wrapper", ">= 0.3"
 end
