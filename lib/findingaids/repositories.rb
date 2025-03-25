@@ -4,7 +4,7 @@ module Findingaids
 
     def self.repositories
       @repositories ||= begin
-                          repositories_yaml_file = "repositories-findingaids_2022_migration.yml"
+                          repositories_yaml_file = "repositories.yml"
                           YAML.load_file(File.join(Rails.root, "config", repositories_yaml_file))["Catalog"]["repositories"]
                         end
     end
