@@ -14,11 +14,12 @@ module BlacklightHelper
     if doc.unittitle.blank?
       label = t("search.brief_results.link_text.no_title")
     else
-      field ||= doc.unittitle
-      # presenter_obj = index_presenter_class(doc).new(doc, self)
-      # label = presenter_obj.label(field, opts)
+      presenter_obj = index_presenter_class(doc).new(doc, self)
+      # TODO: Figure out how to not have this hardcoded
+      label = presenter_obj.heading
     end
-    link_to_findingaid(doc, field)
+
+    link_to_findingaid(doc, label)
   end
 
   def sanitize_search_params(params)
@@ -60,4 +61,20 @@ module BlacklightHelper
     def blacklight_configuration_context
       @blacklight_configuration_context ||= Blacklight::Configuration::Context.new(self)
     end
+
+  # Removed from configuration_helper_behavior in Blacklight 7
+  def document_show_link_field(document = nil)
+    fields = Array(blacklight_config.view_config(document_index_view_type).title_field)
+
+    field = fields.first if document.nil?
+    field ||= fields.find { |f| document.has? f }
+    field &&= field.try(:to_sym)
+    field ||= document.id
+
+    field
+  end
+
+  def index_presenter_class(_document)
+    blacklight_config.index.document_presenter_class
+  end
 end
