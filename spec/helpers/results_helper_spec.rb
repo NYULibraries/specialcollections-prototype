@@ -282,50 +282,48 @@ describe ResultsHelper do
 
     before { allow(helper).to receive(:blacklight_config).and_return blacklight_config }
 
-    context "when in the FINDINGAIDS_2022_MIGRATION configuration" do
-      context "when document is not a real url" do
-        context "and document is a collection level item" do
-          it { is_expected.to eql("<a target=\"_blank\" href=\"https://findingaids.library.nyu.edu/fales/testead/all/#123\">Guide to titling finding aids</a>") }
-        end
-        context "and document is a series level item" do
-          let(:solr_document) { create(:solr_document, format: [ "Archival Series" ], parent: [ "ref344" ], ref: "ref350") }
+    context "when document is not a real url" do
+      context "and document is a collection level item" do
+        it { is_expected.to eql("<a target=\"_blank\" href=\"https://findingaids.library.nyu.edu/fales/testead/all/#123\">Guide to titling finding aids</a>") }
+      end
+      context "and document is a series level item" do
+        let(:solr_document) { create(:solr_document, format: [ "Archival Series" ], parent: [ "ref344" ], ref: "ref350") }
 
-          it { is_expected.to eql("<a target=\"_blank\" href=\"https://findingaids.library.nyu.edu/fales/testead/all/#ref350\">Guide to titling finding aids</a>") }
-        end
-        context "and document is an object level item" do
-          let(:solr_document) { create(:solr_document, format: [ "Archival Object" ], parent: [ "ref3" ], ref: "ref309") }
+        it { is_expected.to eql("<a target=\"_blank\" href=\"https://findingaids.library.nyu.edu/fales/testead/all/#ref350\">Guide to titling finding aids</a>") }
+      end
+      context "and document is an object level item" do
+        let(:solr_document) { create(:solr_document, format: [ "Archival Object" ], parent: [ "ref3" ], ref: "ref309") }
 
-          it { is_expected.to eql("<a target=\"_blank\" href=\"https://findingaids.library.nyu.edu/fales/testead/all/#ref309\">Guide to titling finding aids</a>") }
-        end
+        it { is_expected.to eql("<a target=\"_blank\" href=\"https://findingaids.library.nyu.edu/fales/testead/all/#ref309\">Guide to titling finding aids</a>") }
+      end
+    end
+
+    context "when document is a real url" do
+      before {
+        # https://stackoverflow.com/a/66783988
+        allow_any_instance_of(Faraday::Connection).to receive(:head).and_return(double(Faraday::Response, status: 200))
+      }
+      after {
+        # https://makandracards.com/makandra/480226-how-to-reset-a-mock
+        RSpec::Mocks.space.proxy_for(Faraday::Connection).reset
+      }
+
+      context "and document is an collection level item" do
+        let(:solr_document) { create(:solr_document, format: [ "Archival Collection" ], id: "mss_313", ead: "mss_313") }
+
+        it { is_expected.to eql("<a target=\"_blank\" href=\"https://findingaids.library.nyu.edu/fales/mss_313/\">Guide to titling finding aids</a>") }
       end
 
-      context "when document is a real url" do
-        before {
-          # https://stackoverflow.com/a/66783988
-          allow_any_instance_of(Faraday::Connection).to receive(:head).and_return(double(Faraday::Response, status: 200))
-        }
-        after {
-          # https://makandracards.com/makandra/480226-how-to-reset-a-mock
-          RSpec::Mocks.space.proxy_for(Faraday::Connection).reset
-        }
+      context "and document is an series level item" do
+        let(:solr_document) { create(:solr_document, format: [ "Archival Series" ], id: "mss_313", ead: "mss_313", parent: nil, ref: "aspace_ref3") }
 
-        context "and document is an collection level item" do
-          let(:solr_document) { create(:solr_document, format: [ "Archival Collection" ], id: "mss_313", ead: "mss_313") }
+        it { is_expected.to eql("<a target=\"_blank\" href=\"https://findingaids.library.nyu.edu/fales/mss_313/contents/aspace_ref3/\">Guide to titling finding aids</a>") }
+      end
 
-          it { is_expected.to eql("<a target=\"_blank\" href=\"https://findingaids.library.nyu.edu/fales/mss_313/\">Guide to titling finding aids</a>") }
-        end
+      context "and document is an object level item" do
+        let(:solr_document) { create(:solr_document, format: [ "Archival Object" ], id: "mss_313", ead: "mss_313", parent: [ "aspace_ref3" ], ref: "aspace_ref309") }
 
-        context "and document is an series level item" do
-          let(:solr_document) { create(:solr_document, format: [ "Archival Series" ], id: "mss_313", ead: "mss_313", parent: nil, ref: "aspace_ref3") }
-
-          it { is_expected.to eql("<a target=\"_blank\" href=\"https://findingaids.library.nyu.edu/fales/mss_313/contents/aspace_ref3/\">Guide to titling finding aids</a>") }
-        end
-
-        context "and document is an object level item" do
-          let(:solr_document) { create(:solr_document, format: [ "Archival Object" ], id: "mss_313", ead: "mss_313", parent: [ "aspace_ref3" ], ref: "aspace_ref309") }
-
-          it { is_expected.to eql("<a target=\"_blank\" href=\"https://findingaids.library.nyu.edu/fales/mss_313/contents/aspace_ref3/#aspace_ref309\">Guide to titling finding aids</a>") }
-        end
+        it { is_expected.to eql("<a target=\"_blank\" href=\"https://findingaids.library.nyu.edu/fales/mss_313/contents/aspace_ref3/#aspace_ref309\">Guide to titling finding aids</a>") }
       end
     end
   end
