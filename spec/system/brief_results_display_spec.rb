@@ -60,4 +60,19 @@ describe "Brief Results Display", js: true do
       end
     end
   end
+
+  it "display at the component level" do
+    add_document('oconor.xml')
+
+    visit "/"
+
+    fill_in "q", with: "Addendum 7/5/2007"
+    click_button "Search"
+
+    within("span.filter-value") { expect(page).to have_content("Addendum 7/5/2007") }
+  end
+
+  # Scenario: Link to low level results for the series level components
+  #   Given I search on the phrase "Addendum 7/5/2007"
+  #   Then I should see link "Search all archival materials within this series" within the first result
 end
