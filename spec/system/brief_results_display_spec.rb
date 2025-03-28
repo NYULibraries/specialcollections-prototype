@@ -37,6 +37,40 @@ describe "Brief Results Display", js: true do
     end
   end
 
+  it "links to search all materials within collection launches faceted search" do
+    add_document('bloch.xml')
+
+    visit "/"
+
+    click_button "Level"
+    click_link "Archival Collection"
+
+    within("span.filter-format_sim") do
+      within("span.filter-value") { expect(page).to have_content("Archival Collection") }
+    end
+
+    click_button "Collection"
+    within("div.blacklight-collection_sim") do
+      click_link "Mark Bloch Postal Art Network (PAN) Archive"
+    end
+
+    click_link "Search all archival materials within this collection"
+
+    within("div.blacklight-format_sim") do
+      expect(page).not_to have_content("Archival Collection")
+    end
+
+    within("div.blacklight-collection_sim") do
+      expect(page).to have_content("Mark Bloch Postal Art Network (PAN) Archive")
+    end
+
+    within("article.document-position-1") do
+      within("dl.document-metadata") do
+        within("dd.blacklight-format_ssm") { expect(page).to have_content("Archival Collection") }
+      end
+    end
+  end
+
   it "displays appropriate fields at the collection level" do
     add_document('kopit.xml')
 
