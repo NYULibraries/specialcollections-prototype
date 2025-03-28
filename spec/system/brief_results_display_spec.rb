@@ -71,7 +71,7 @@ describe "Brief Results Display", js: true do
     end
   end
 
-  it "displays appropriate fields at the collection level" do
+  it "displays 'No Title' when a document doesn't have a title" do
     add_document('kopit.xml')
 
     visit "/"
