@@ -64,7 +64,6 @@ group :test do
   gem "selenium-webdriver"
 end
 gem "blacklight", ">= 7.0"
-gem "blacklight_advanced_search"
 
 group :development, :test do
   gem "dotenv"
