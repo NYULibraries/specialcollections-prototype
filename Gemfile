@@ -59,7 +59,6 @@ group :development do
 end
 
 gem "blacklight", ">= 7.0"
-gem "blacklight_advanced_search"
 
 group :development, :test do
   gem "bundler-audit"
