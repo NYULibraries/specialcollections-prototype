@@ -11,13 +11,18 @@ jobs:
         environment:
           - SOLR_HOME=/var/solr
           - SOLR_CORE=test-core
-
+    setup:
+      - setup_docker: true
     steps:
       - checkout
       - run:
           name: Which bundler?
           command: bundle -v
       - ruby/install-deps
+      - run:
+          name: Start Solr Core
+          command: |
+            docker exec -t solr bin/solr start
       - run:
           name: Copy Solr configuration
           command: |
