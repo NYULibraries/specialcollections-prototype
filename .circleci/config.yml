@@ -11,10 +11,9 @@ jobs:
         environment:
           - SOLR_HOME=/var/solr
           - SOLR_CORE=test-core
-    setup:
-      - setup_docker: true
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: Which bundler?
           command: bundle -v
