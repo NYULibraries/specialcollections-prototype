@@ -12,7 +12,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - solr-tgz-cache-{{ checksum "tmp/solr-9.6.1.tgz" }}
+            - solr-tgz-cache-{{ checksum ".solr_wrapper.yml" }}
             - solr-tgz-cache-{{ .Branch }}
             - solr-tgz-cache-
 
@@ -24,9 +24,9 @@ jobs:
           name: Test suite
           command: bundle exec rake sc:test
       - save_cache:
+          key: solr-tgz-cache-{{ checksum ".solr_wrapper.yml" }}
           paths:
             - tmp/solr-9.6.1.tgz
-          key: solr-tgz-cache-{{ checksum "tmp/solr-9.6.1.tgz" }}
 
       - store_artifacts:
           path: tmp/capybara
