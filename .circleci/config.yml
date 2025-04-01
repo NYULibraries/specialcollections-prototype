@@ -24,6 +24,12 @@ jobs:
     steps:
       # Checkout the code as the first step.
       - checkout
+      - restore_cache:
+          keys:
+            - solr-tgz-cache-{{ checksum ".solr_wrapper.yml" }}
+            - solr-tgz-cache-{{ .Branch }}
+            - solr-tgz-cache-
+
       - run:
           name: Which bundler?
           command: bundle -v
@@ -31,13 +37,18 @@ jobs:
       - run:
           name: Test suite
           command: bundle exec rake sc:test
+      - save_cache:
+          key: solr-tgz-cache-{{ checksum ".solr_wrapper.yml" }}
+          paths:
+            - tmp/solr-9.6.1.tgz
+
       - store_artifacts:
           path: tmp/capybara
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
 workflows:
-  sample: # This is the name of the workflow, feel free to change it to better match your workflow.
+  build: # This is the name of the workflow, feel free to change it to better match your workflow.
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - build
