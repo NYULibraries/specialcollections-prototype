@@ -67,6 +67,7 @@ gem "blacklight", ">= 7.0"
 gem "blacklight_advanced_search"
 
 group :development, :test do
+  gem "bundler-audit"
   gem "dotenv"
   gem "factory_bot_rails"
   gem "rspec-its"
