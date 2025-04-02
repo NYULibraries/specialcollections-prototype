@@ -3,13 +3,16 @@
 
 require_relative "config/application"
 require 'rubocop/rake_task'
+require 'bundler/audit/task'
 
 Rails.application.load_tasks
 RuboCop::RakeTask.new
+Bundler::Audit::Task.new
 
 require 'solr_wrapper/rake_task' unless Rails.env.production?
 
 task default: %i[
   spec
   rubocop
+  bundle:audit
 ]
