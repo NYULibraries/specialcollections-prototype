@@ -15,7 +15,7 @@ namespace :sc do
   end
 
   desc "Run Solr and Blacklight for interactive development"
-  task server: [:environment, "assets:precompile"]  do
+  task server: [ :environment, "assets:precompile" ]  do
     FileUtils.rm_rf "tmp/development-core"
 
     SolrWrapper.wrap(SHARED_SOLR_OPTIONS.merge(port: 8983, instance_dir: "tmp/development-core")) do |solr|
