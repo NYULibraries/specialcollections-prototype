@@ -12,7 +12,9 @@ describe "Brief Results Display", js: true do
     within("span.filter-value") { expect(page).to have_content("bloch") }
 
     click_button "Level"
-    click_link "Archival Collection"
+    within("div.blacklight-format_sim") do
+      click_link "Archival Collection"
+    end
 
     within("span.filter-format_sim") do
       within("span.filter-value") { expect(page).to have_content("Archival Collection") }
@@ -43,7 +45,9 @@ describe "Brief Results Display", js: true do
     visit "/"
 
     click_button "Level"
-    click_link "Archival Collection"
+    within("div.blacklight-format_sim") do
+      click_link "Archival Collection"
+    end
 
     within("span.filter-format_sim") do
       within("span.filter-value") { expect(page).to have_content("Archival Collection") }

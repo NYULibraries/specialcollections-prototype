@@ -10,3 +10,5 @@
     </div>
   </div>
 </nav>
+
+<%= render Blacklight::BreadcrumbsComponent.new(request: request, repository: params[:repository]) %>

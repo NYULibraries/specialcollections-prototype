@@ -1,0 +1,11 @@
+<div class="container mt-2">
+  <div class="col-12">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <% @items.each do |item| %>
+          <li class="breadcrumb-item"><%= link_to_if item[:href], item[:text], item[:href] %></li>
+        <% end %>
+      </ol>
+    </nav>
+  </div>
+</div>
