@@ -9,7 +9,6 @@ module ApplicationHelper
     link_to (label || url), url, opts.merge({ target: "_blank" })
   end
 
-
   # Abstract actually constructing the url to the finding aids document
   def get_url_for_findingaid_from_document(doc)
     get_url_for_2022_findingaid_from_document(doc)
@@ -89,16 +88,6 @@ module ApplicationHelper
   # Get the display url for the current repository
   def current_repository_url
     @current_repository_admin_code ||= current_repository.last["url"]
-  end
-
-  # All repositories may not have home text associated with their homepage
-  # just return false in that case so we know not to render it
-  def current_repository_home_text?
-    begin
-      I18n.translate!("repositories.#{current_repository_url}.home_text", raise: true)
-    rescue
-      false
-    end
   end
 
   def get_facet_label_from_key(key)
