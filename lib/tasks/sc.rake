@@ -48,6 +48,7 @@ namespace :sc do
   task load: :environment do
     ENV["SOLR_URL"] = "http://localhost:8983/solr/development-core"
 
+    add_document("berol.xml")
     add_document("bloch.xml")
     add_document("oh002.xml")
     add_document("kopit.xml")
