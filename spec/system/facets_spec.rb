@@ -3,6 +3,7 @@ require "rails_helper"
 describe "Facets", js: true do
   it "displays facets in a specific order" do
     add_document('bloch.xml')
+    add_document('intelligencer.xml')
     add_document('kopit.xml')
     add_document('oh002.xml')
 
@@ -19,6 +20,7 @@ describe "Facets", js: true do
                              "Subject",
                              "Name",
                              "Place",
+                             "Language",
                              "Collection",
                              "Level"
                            ]
