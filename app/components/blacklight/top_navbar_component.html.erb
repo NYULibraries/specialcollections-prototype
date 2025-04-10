@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-dark <%= request.path == "/nyhistory" ? "bg-light-subtle" : "bg-dark" %> topbar" aria-label="<%= aria_label %>">
   <div class="<%= container_classes %>">
     <% if request.path == "/nyhistory" %>
-      <a class="navbar-brand" href="https://www.nyhistory.org/library"><%= image_tag "nyh.png", height: 24 %></a>
+      <a class="navbar-brand" href="https://www.nyhistory.org/library"><%= image_tag "nyh.png", height: 24, alt: "The New York Historical Homepage" %></a>
     <% else %>
       <a class="navbar-brand" href="https://library.nyu.edu"><img src="https://cdn.library.nyu.edu/images/nyulibraries-logo.svg" width="192" alt="NYU Libraries homepage"></a>
     <% end %>
