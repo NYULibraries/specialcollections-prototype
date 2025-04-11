@@ -29,6 +29,8 @@ Rails.application.routes.draw do
     get "#{coll[1]['url']}" => "catalog#index", :search_field => "#{coll[1]['url_safe_display']}", :repository => "#{coll[1]['display']}", :f => { repository_sim: [ "#{coll[1]['admin_code']}" ] }
   end
 
+  get "/404", to: "errors#not_found"
+
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
