@@ -1,4 +1,69 @@
-<footer class="container mt-4 mb-4">
-  <%= t('blacklight.application_name') %> Powered
-  by <%= link_to "Blacklight", "http://projectblacklight.org/", :target => :blank %>
+<footer>
+  <div class="text-white-50" style="background: #22272d">
+    <div class="container pt-5 pb-4">
+      <div class="row">
+        <div class="col-3">
+          <div class="d-grid">
+            <a class="btn btn-lg btn-primary p-5" href="https://library.nyu.edu/giving/">Give to the Libraries</a>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="list-group list-group-flush small" data-bs-theme="dark">
+            <a href="https://home.nyu.edu" class="list-group-item" target="_blank">
+              Login to NYU Home
+            </a>
+            <a href="https://library.nyu.edu/departments/" class="list-group-item">
+              Departments
+            </a>
+            <a href="https://library.nyu.edu/people/" class="list-group-item">
+              Staff Directory
+            </a>
+            <a href="https://nyulibraries.statuspage.io" class="list-group-item" target="_blank">
+              Status Page
+            </a>
+            <a href="https://nyulibraries.haystack.so/" class="list-group-item" target="_blank">
+              Staff Haystack (Login Required)
+            </a>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="list-group list-group-flush small" data-bs-theme="dark">
+            <a href="https://guides.nyu.edu/" class="list-group-item" target="_blank">
+              Research Guides
+            </a>
+            <a href="http://library.answers.nyu.edu" class="list-group-item" target="_blank">
+              FAQs
+            </a>
+            <a href="https://library.nyu.edu/about/who-we-are/career-opportunities/" class="list-group-item">
+              Career Opportunities
+            </a>
+            <a href="https://library.nyu.edu/contact/" class="list-group-item">
+              Contact Us
+            </a>
+            <a href="https://www.nyu.edu/footer/accessibility.html" class="list-group-item" target="_blank">
+              Accessibility
+            </a>
+          </div>
+        </div>
+        <div class="col-3 small">
+          <p>Find out about upcoming programs, events, and resources.<br>
+            <a class="text-white" href="https://bit.ly/nyu-liblink">Subscribe to our email list</a>
+          </p>
+          <p></p>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <hr>
+      </div>
+      <div class="row mt-4">
+        <div class="col-9 small">
+          Unless otherwise noted, all content copyright New York University. All rights reserved.
+            <a href="https://library.nyu.edu/privacy-policy/" class="text-white">Privacy policy</a></small>
+        </div>
+        <div class="col-3 text-end">
+          <%= link_to image_tag("nyu-footer-logo.svg", height: 27, alt: "New York University homepage"), "https://www.nyu.edu" %>
+        </div>
+      </div>
+    </div>
+  </div>
 </footer>
