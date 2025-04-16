@@ -7,7 +7,9 @@
                                         response: @response,
                                         view_config: conf) %>
 <% end %>
-
+<% content_for(:skip_links) do %>
+  <a class="d-inline-flex p-2 m-1" href="#facets">Skip to facets</a>
+<% end %>
 <% unless has_search_parameters? %>
   <%# if there are no input/search related params, display the "home" partial -%>
   <%= render 'home' %>
