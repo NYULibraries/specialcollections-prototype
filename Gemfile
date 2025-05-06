@@ -71,7 +71,7 @@ group :development, :test do
   gem "dotenv"
   gem "factory_bot_rails"
   gem "rspec-its"
-  gem "rspec-rails", "~> 7.1.1"
+  gem "rspec-rails", "~> 8.0.0"
   gem "solr_wrapper", ">= 0.3"
 end
 gem "rsolr", ">= 1.0", "< 3"
