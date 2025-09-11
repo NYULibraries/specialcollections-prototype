@@ -1,0 +1,36 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - RAILS_ENV=${RAILS_ENV}
+      - SOLR_URL=${SOLR_URL}
+    volumes:
+      - .:/app
+    depends_on:
+      - solr
+    networks:
+      - app_network
+
+  solr:
+    # https://solr.apache.org/guide/solr/latest/deployment-guide/solr-in-docker.html#docker-compose
+    image: solr:9
+    ports:
+      - "8983:8983"
+    volumes:
+      - solr_data:/var/solr
+    command:
+      - solr-precreate
+      - development-core
+    networks:
+      - app_network
+
+volumes:
+  solr_data:
+
+networks:
+  app_network:
+    driver: bridge
