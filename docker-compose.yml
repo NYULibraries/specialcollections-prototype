@@ -9,7 +9,7 @@ services:
       - RAILS_ENV=${RAILS_ENV:-development}
       - SOLR_URL=${SOLR_URL}
     volumes:
-      - .:/app
+      - .:/rails
     depends_on:
       - solr
     networks:
