@@ -6,7 +6,7 @@ services:
     ports:
       - "80:80"
     environment:
-      - RAILS_ENV=${RAILS_ENV}
+      - RAILS_ENV=${RAILS_ENV:-development}
       - SOLR_URL=${SOLR_URL}
     volumes:
       - .:/app
