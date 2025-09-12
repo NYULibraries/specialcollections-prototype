@@ -11,7 +11,8 @@ services:
     volumes:
       - .:/rails
     depends_on:
-      - solr
+      solr:
+        condition: service_healthy
     networks:
       - app_network
 
@@ -25,6 +26,12 @@ services:
     command:
       - solr-precreate
       - development-core
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS --connect-timeout 2 --max-time 2 http://localhost:8983/solr/development-core/admin/ping?wt=json | grep -q '\"status\":\"OK\"'"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 20s
     networks:
       - app_network
 
