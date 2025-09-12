@@ -46,3 +46,4 @@ To stand up dev against an existing instance of Solr:
 ```bash
 $ SOLR_URL=http://ip-address:port/solr/findingaids bin/rails server
 ```
+
