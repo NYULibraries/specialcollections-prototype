@@ -3,3 +3,17 @@
 @import 'bootstrap-icons/font/bootstrap-icons';
 @import "local";
 @import "blacklight-frontend/app/assets/stylesheets/blacklight/blacklight";
+
+// Hide X/Remove button from sidebar facet
+.collection-page #facet-repository_sim span.facet-label .remove {
+  display: none;
+}
+
+// Hide X/Remove button from appliedParams button
+.collection-page #appliedParams span.filter-repository_sim .remove {
+  display: none;
+}
+
+.collection-page #appliedParams span.filter-repository_sim span.constraint-value {
+  border-radius: $border-radius;
+}
