@@ -18,16 +18,10 @@ services:
 
   solr:
     # https://solr.apache.org/guide/solr/latest/deployment-guide/solr-in-docker.html#docker-compose
-    image: solr:9.9.0
+    build:
+      context: solr/
     ports:
       - "8983:8983"
-    volumes:
-      - solr_data:/var/solr
-      - ./solr/conf:/configs/development-core/conf:ro
-    command:
-      - solr-precreate
-      - development-core
-      - /configs/development-core
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS --connect-timeout 2 --max-time 2 http://localhost:8983/solr/development-core/admin/ping?wt=json | grep -q '\"status\":\"OK\"'"]
       interval: 5s
