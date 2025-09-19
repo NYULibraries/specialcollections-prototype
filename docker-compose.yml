@@ -13,8 +13,16 @@ services:
     depends_on:
       solr:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS --connect-timeout 2 --max-time 2 http://localhost:8080 > /dev/null || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 30s
     networks:
-      - app_network
+      app_network:
+        aliases:
+          - app.test
 
   solr:
     # https://solr.apache.org/guide/solr/latest/deployment-guide/solr-in-docker.html#docker-compose
@@ -28,6 +36,19 @@ services:
       timeout: 3s
       retries: 30
       start_period: 20s
+    networks:
+      - app_network
+
+  playwright:
+    build:
+      context: .
+      dockerfile: e2e/Dockerfile.playwright
+    environment:
+      - CI=${CI}
+      - PLAYWRIGHT_BASE_URL=http://app.test:8080
+    depends_on:
+      app:
+        condition: service_healthy
     networks:
       - app_network
 
