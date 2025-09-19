@@ -12,6 +12,12 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
 
+  # Allow requests from the Playwright container.
+  # config/environments/development.rb
+  config.hosts << "app.test"
+  config.hosts << /\Aapp\.test(:\d+)?\z/
+
+
   # Enable server timing.
   config.server_timing = true
 
