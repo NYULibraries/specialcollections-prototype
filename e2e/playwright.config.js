@@ -1,14 +1,14 @@
 import { defineConfig, devices } from '@playwright/test';
 
 import dotenv from 'dotenv';
-import path from 'path';
 import { fileURLToPath } from 'url';
+import path from 'path';
 
 // Recreate __dirname in ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config({ path: path.resolve(__dirname, '.env.test') });
+dotenv.config({ path: path.resolve(__dirname, '.env.test'), quiet: true });
 
 /**
  * Read environment variables from file.
