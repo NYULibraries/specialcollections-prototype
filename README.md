@@ -25,6 +25,23 @@ While the dev server is running (`sc:server` above) you can load these fixtures 
 $ bin/rake sc:load
 ```
 
+## Playwright End-to-End Tests
+
+The Playwright service automatically runs `bin/rake sc:load` in a short-lived helper container before executing the browser tests. This seeds the development Solr core with the full fixture set and leaves the index populated for ad-hoc browsing afterward.
+
+To launch the suite (and its prerequisite containers) in one step:
+
+```bash
+docker compose up playwright
+```
+
+Add `--build` if you need to rebuild the Docker images first. The command will:
+
+- Start Solr and the Rails app
+- Run `solr-fixtures` (which executes `bin/rake sc:load` against the Solr container)
+- Execute the Playwright suite
+
+
 ## Test Suite
 
 To run the test suite:
