@@ -40,7 +40,23 @@ services:
     networks:
       - app_network
 
+  solr-fixtures:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - RAILS_ENV=development
+      - SOLR_URL=http://solr:8983/solr/development-core
+    command: ["bin/rake", "sc:load"]
+    depends_on:
+      solr:
+        condition: service_healthy
+    networks:
+      - app_network
+    restart: "no"
+
   playwright:
+    container_name: playwright-e2e-run
     build:
       context: .
       dockerfile: e2e/Dockerfile.playwright
@@ -50,6 +66,8 @@ services:
     depends_on:
       app:
         condition: service_healthy
+      solr-fixtures:
+        condition: service_completed_successfully
     networks:
       - app_network
     ipc: host
