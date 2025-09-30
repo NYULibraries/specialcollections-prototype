@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('Brief Results Display Feature', () => {
+  // Keep this suite serial because tests rely on side effects (e.g., loaded fixtures).
+  // Serial preserves setup order to prevent later failures when earlier steps abort.
   test.describe.configure({ mode: 'serial' });
 
   test('displays appropriate fields at the collection level', async ({ page }) => {
