@@ -6,7 +6,7 @@ version: 2.1
 # See: https://circleci.com/docs/orb-intro/
 orbs:
   # See the Ruby orb documentation here: https://circleci.com/developer/orbs/orb/circleci/ruby
-  ruby: circleci/ruby@2.5.4
+  ruby: circleci/ruby@3.3.4
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/jobs-steps/#jobs-overview & https://circleci.com/docs/configuration-reference/#jobs
