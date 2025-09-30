@@ -41,6 +41,13 @@ Add `--build` if you need to rebuild the Docker images first. The command will:
 - Run `solr-fixtures` (which executes `bin/rake sc:load` against the Solr container)
 - Execute the Playwright suite
 
+Playwright test files share a Prettier + ESLint configuration scoped to the e2e workspace. Run the formatter:
+
+```bash
+yarn --cwd e2e format
+```
+
+Use `yarn --cwd e2e lint` to verify formatting and linting without modifying files.
 
 ## Test Suite
 
