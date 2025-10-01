@@ -61,10 +61,7 @@ jobs:
       - store_artifacts:
           path: e2e/test-results
 
-# Orchestrate jobs using workflows
-# See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
 workflows:
   ci:
-    # Inside the workflow, you define the jobs you want to run.
     jobs:
       - build_and_test
