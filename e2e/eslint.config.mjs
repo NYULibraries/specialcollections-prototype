@@ -23,5 +23,15 @@ export default [
       ...playwright.configs['playwright-test'].rules,
     },
   },
+  {
+    files: ['playwright.config.{js,cjs,mjs,ts}'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module',
+      globals: {
+        process: 'readonly',
+      },
+    },
+  },
   prettier,
 ];
