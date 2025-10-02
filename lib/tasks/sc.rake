@@ -46,7 +46,7 @@ namespace :sc do
 
   desc "Load data into development environment"
   task load: :environment do
-    ENV["SOLR_URL"] = "http://localhost:8983/solr/development-core"
+    ENV["SOLR_URL"] ||= "http://localhost:8983/solr/development-core"
 
     add_document("berol.xml")
     add_document("bloch.xml")

@@ -1,0 +1,80 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - RAILS_ENV=${RAILS_ENV:-development}
+      - SOLR_URL=${SOLR_URL:-http://solr:8983/solr/development-core}
+    # volumes:
+    #   - .:/rails
+    depends_on:
+      solr:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS --connect-timeout 2 --max-time 2 http://localhost:8080 > /dev/null || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 30s
+    networks:
+      app_network:
+        aliases:
+          - app.test
+
+  solr:
+    # https://solr.apache.org/guide/solr/latest/deployment-guide/solr-in-docker.html#docker-compose
+    build:
+      context: solr/
+    ports:
+      - "8983:8983"
+    command: ["solr-precreate", "development-core", "/configs/development-core"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS --connect-timeout 2 --max-time 2 http://localhost:8983/solr/development-core/admin/ping?wt=json | grep -q '\"status\":\"OK\"'"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 20s
+    networks:
+      - app_network
+
+  solr-fixtures:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - RAILS_ENV=development
+      - SOLR_URL=http://solr:8983/solr/development-core
+    command: ["bin/rake", "sc:load"]
+    depends_on:
+      solr:
+        condition: service_healthy
+    networks:
+      - app_network
+    restart: "no"
+
+  playwright:
+    container_name: playwright-e2e-run
+    build:
+      context: .
+      dockerfile: e2e/Dockerfile.playwright
+    environment:
+      - CI=${CI}
+      - PLAYWRIGHT_BASE_URL=http://app.test:8080
+    depends_on:
+      app:
+        condition: service_healthy
+      solr-fixtures:
+        condition: service_completed_successfully
+    networks:
+      - app_network
+    ipc: host
+
+volumes:
+  solr_data:
+
+networks:
+  app_network:
+    driver: bridge

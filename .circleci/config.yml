@@ -6,12 +6,12 @@ version: 2.1
 # See: https://circleci.com/docs/orb-intro/
 orbs:
   # See the Ruby orb documentation here: https://circleci.com/developer/orbs/orb/circleci/ruby
-  ruby: circleci/ruby@2.1.1
+  ruby: circleci/ruby@2.5.4
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/jobs-steps/#jobs-overview & https://circleci.com/docs/configuration-reference/#jobs
 jobs:
-  build:
+  build_and_test:
     # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/executor-intro/ & https://circleci.com/docs/configuration-reference/#executor-job
     docker:
@@ -44,11 +44,24 @@ jobs:
 
       - store_artifacts:
           path: tmp/capybara
+      - setup_remote_docker
+      - run:
+          name: Build Playwright stack
+          command: docker compose build app solr solr-fixtures playwright
+      - run:
+          name: Run Playwright tests
+          command: |
+            docker compose up playwright
+      - run:
+          name: Collect Playwright artifacts
+          when: always
+          command: |
+            mkdir -p e2e/test-results
+            docker cp playwright-e2e-run:/e2e/test-results/. e2e/test-results 2>/dev/null || echo "No test results."
+      - store_artifacts:
+          path: e2e/test-results
 
-# Orchestrate jobs using workflows
-# See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
 workflows:
-  build: # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run.
+  ci:
     jobs:
-      - build
+      - build_and_test

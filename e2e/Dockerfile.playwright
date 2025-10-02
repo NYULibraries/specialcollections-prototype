@@ -1,0 +1,25 @@
+FROM mcr.microsoft.com/playwright:v1.55.0-noble
+
+ENV CONTAINER_MODE=true \
+    INSTALL_PATH=/e2e \
+    USER=pwuser \
+    PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+
+
+WORKDIR $INSTALL_PATH
+
+COPY e2e/package.json e2e/yarn.lock ./
+
+# Install e2e dependencies
+RUN yarn install --frozen-lockfile \
+    && yarn cache clean
+
+# Copy over remaining e2e files
+COPY e2e/ .
+
+RUN chown -R $USER:$USER $INSTALL_PATH
+
+USER $USER
+
+# Run playwright tests
+CMD ["yarn", "test:e2e"]
