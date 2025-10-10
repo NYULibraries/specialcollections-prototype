@@ -1,3 +1,4 @@
+import { ATTRIBUTES, EXTERNAL_LINKS, LINK_LABELS, ROLES, ROUTES } from './support/catalog-data.js';
 import { expect, test } from '@playwright/test';
 
 const BROOKLYN_HISTORY_DESCRIPTION =
@@ -17,7 +18,7 @@ const UNIVERSITY_ARCHIVES_DESCRIPTION =
 
 test.describe('Stable repository links', () => {
   test('Fales homepage displays informational text and link', async ({ page }) => {
-    await page.goto('/fales');
+    await page.goto(ROUTES.FALES);
 
     await expect(page.locator('div#facet-repository_sim')).toContainText(
       'The Fales Library & Special Collections'
@@ -25,15 +26,15 @@ test.describe('Stable repository links', () => {
 
     const content = page.locator('section#content');
     await expect(content).toContainText(FALES_DESCRIPTION);
-    await expect(content.getByRole('link', { name: 'Website' })).toHaveAttribute(
-      'href',
-      'https://library.nyu.edu/locations/special-collections-center/'
+    await expect(content.getByRole(ROLES.LINK, { name: LINK_LABELS.WEBSITE })).toHaveAttribute(
+      ATTRIBUTES.HREF,
+      EXTERNAL_LINKS.SPECIAL_COLLECTIONS_CENTER
     );
     await expect(content.locator('article.document').first()).toBeVisible();
   });
 
   test('Tamiment homepage displays informational text and link', async ({ page }) => {
-    await page.goto('/tamiment');
+    await page.goto(ROUTES.TAMIMENT);
 
     await expect(page.locator('div#facet-repository_sim')).toContainText(
       'Tamiment Library & Wagner Labor Archives'
@@ -41,66 +42,66 @@ test.describe('Stable repository links', () => {
 
     const content = page.locator('section#content');
     await expect(content).toContainText(TAMIMENT_DESCRIPTION);
-    await expect(content.getByRole('link', { name: 'Website' })).toHaveAttribute(
-      'href',
-      'https://library.nyu.edu/locations/special-collections-center/'
+    await expect(content.getByRole(ROLES.LINK, { name: LINK_LABELS.WEBSITE })).toHaveAttribute(
+      ATTRIBUTES.HREF,
+      EXTERNAL_LINKS.SPECIAL_COLLECTIONS_CENTER
     );
     await expect(content.locator('article.document').first()).toBeVisible();
   });
 
   test('University Archives homepage displays informational text and link', async ({ page }) => {
-    await page.goto('/universityarchives');
+    await page.goto(ROUTES.UNIVERSITY_ARCHIVES);
 
     const content = page.locator('section#content');
     await expect(content).toContainText(UNIVERSITY_ARCHIVES_DESCRIPTION);
-    await expect(content.getByRole('link', { name: 'Website' })).toHaveAttribute(
-      'href',
-      'https://library.nyu.edu/locations/special-collections-center/'
+    await expect(content.getByRole(ROLES.LINK, { name: LINK_LABELS.WEBSITE })).toHaveAttribute(
+      ATTRIBUTES.HREF,
+      EXTERNAL_LINKS.SPECIAL_COLLECTIONS_CENTER
     );
   });
 
   test('The New York Historical homepage displays informational text and link', async ({
     page,
   }) => {
-    await page.goto('/nyhistory');
+    await page.goto(ROUTES.NY_HISTORY);
 
     await expect(
-      page.locator('section#content').getByRole('link', { name: 'Website' })
-    ).toHaveAttribute('href', 'https://www.nyhistory.org/library');
+      page.locator('section#content').getByRole(ROLES.LINK, { name: LINK_LABELS.WEBSITE })
+    ).toHaveAttribute(ATTRIBUTES.HREF, 'https://www.nyhistory.org/library');
   });
 
   test('Center for Brooklyn History homepage displays informational text and link', async ({
     page,
   }) => {
-    await page.goto('/brooklynhistory');
+    await page.goto(ROUTES.BROOKLYN_HISTORY);
 
     const content = page.locator('section#content');
     await expect(content).toContainText(BROOKLYN_HISTORY_DESCRIPTION);
-    await expect(content.getByRole('link', { name: 'Website' })).toHaveAttribute(
-      'href',
+    await expect(content.getByRole(ROLES.LINK, { name: LINK_LABELS.WEBSITE })).toHaveAttribute(
+      ATTRIBUTES.HREF,
       'https://www.bklynlibrary.org/center-for-brooklyn-history'
     );
   });
 
   test('Poly Archives homepage displays informational text and link', async ({ page }) => {
-    await page.goto('/poly');
+    await page.goto(ROUTES.POLY);
 
     await expect(
-      page.locator('section#content').getByRole('link', { name: 'Website' })
+      page.locator('section#content').getByRole(ROLES.LINK, { name: LINK_LABELS.WEBSITE })
     ).toHaveAttribute(
-      'href',
+      ATTRIBUTES.HREF,
       'https://library.nyu.edu/locations/poly-archives-special-collections/'
     );
   });
 
   test('RISM homepage displays informational text and link', async ({ page }) => {
-    await page.goto('/rism');
+    await page.goto(ROUTES.RISM);
 
     const content = page.locator('section#content');
     await expect(content).toContainText(RISM_DESCRIPTION);
-    await expect(content.getByRole('link', { name: 'Website' })).toHaveAttribute(
-      'href',
-      'https://library.nyu.edu/locations/special-collections-center/'
+    await expect(content.getByRole(ROLES.LINK, { name: LINK_LABELS.WEBSITE })).toHaveAttribute(
+      ATTRIBUTES.HREF,
+      EXTERNAL_LINKS.SPECIAL_COLLECTIONS_CENTER
     );
   });
 });

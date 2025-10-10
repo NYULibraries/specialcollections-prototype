@@ -1,22 +1,27 @@
+import {
+  FACET_FIELDS,
+  FACET_HEADINGS,
+  FACET_VALUES,
+  LABELS,
+  SEARCH_TERMS,
+  SELECTORS,
+} from './support/catalog-data.js';
+import {
+  applyFacet,
+  expectActiveFacetValue,
+  firstResultCard,
+  openHomepage,
+  searchFromHome,
+} from './support/catalog-interactions.js';
 import { expect, test } from '@playwright/test';
-
-const SEARCH_INPUT = 'input[name="q"]';
-const SEARCH_BUTTON = { name: /search/i };
-
-const searchFor = async (page, term) => {
-  await page.locator(SEARCH_INPUT).fill(term);
-  await page.getByRole('button', SEARCH_BUTTON).click();
-};
 
 test.describe('Zero search results', () => {
   test.describe.configure({ mode: 'serial' });
 
   test('provides helpful feedback on improving my search', async ({ page }) => {
-    await page.goto('/');
+    await searchFromHome(page, SEARCH_TERMS.FOOBAR);
 
-    await searchFor(page, 'foobar');
-
-    await expect(page.locator('span.filter-value')).toContainText('foobar');
+    await expect(page.locator(SELECTORS.ACTIVE_FILTER_VALUE)).toContainText(SEARCH_TERMS.FOOBAR);
 
     const content = page.locator('section#content');
     await expect(content).toContainText('Sorry, no results matched your search.');
@@ -33,44 +38,44 @@ test.describe('Zero search results', () => {
   test('links to search all materials within collection launches faceted search', async ({
     page,
   }) => {
-    await page.goto('/');
+    await openHomepage(page);
 
-    await page.getByRole('button', { name: 'Level' }).click();
-    await page
-      .locator('div.blacklight-format_sim')
-      .getByRole('link', { name: 'Archival Collection', exact: true })
-      .click();
+    await applyFacet(page, {
+      heading: FACET_HEADINGS.LEVEL,
+      field: FACET_FIELDS.FORMAT,
+      value: FACET_VALUES.ARCHIVAL_COLLECTION,
+    });
+    await expectActiveFacetValue(page, {
+      field: FACET_FIELDS.FORMAT,
+      value: FACET_VALUES.ARCHIVAL_COLLECTION,
+    });
 
-    await expect(page.locator('span.filter-format_sim span.filter-value')).toHaveText(
-      'Archival Collection'
-    );
-
-    await page.getByRole('button', { name: 'Collection' }).click();
-    await page
-      .locator('div.blacklight-collection_sim')
-      .getByRole('link', { name: 'Mark Bloch Postal Art Network (PAN) Archive', exact: true })
-      .click();
+    await applyFacet(page, {
+      heading: FACET_HEADINGS.COLLECTION,
+      field: FACET_FIELDS.COLLECTION,
+      value: FACET_VALUES.MARK_BLOCH_ARCHIVE,
+    });
+    await expectActiveFacetValue(page, {
+      field: FACET_FIELDS.COLLECTION,
+      value: FACET_VALUES.MARK_BLOCH_ARCHIVE,
+    });
 
     await page.locator('a.search_within[href*="Mark+Bloch+Postal+Art+Network"]').first().click();
 
-    await expect(page.locator('span.filter-format_sim')).toHaveCount(0);
-    await expect(page.locator('div.blacklight-collection_sim')).toContainText(
-      'Mark Bloch Postal Art Network (PAN) Archive'
+    await expect(page.locator(SELECTORS.FILTER_FORMAT_SECTION)).toHaveCount(0);
+    await expect(page.locator(SELECTORS.FILTER_COLLECTION_SECTION)).toContainText(
+      FACET_VALUES.MARK_BLOCH_ARCHIVE
     );
 
-    const firstDocumentFormat = page
-      .locator('article.document-position-1')
-      .locator('dl.document-metadata dd.blacklight-format_ssm');
+    const firstDocumentFormat = firstResultCard(page).locator(SELECTORS.RESULT_METADATA_FORMAT);
     await expect(firstDocumentFormat).toContainText('Archival Collection');
   });
 
   test("displays 'No Title' when a document doesn't have a title", async ({ page }) => {
-    await page.goto('/');
+    await searchFromHome(page, SEARCH_TERMS.KOPIT);
 
-    await searchFor(page, 'kopit');
+    await expect(page.locator(SELECTORS.ACTIVE_FILTER_VALUE)).toContainText(SEARCH_TERMS.KOPIT);
 
-    await expect(page.locator('span.filter-value')).toContainText('kopit');
-
-    await expect(page.locator('article.document-position-1')).toContainText('No Title');
+    await expect(page.locator(SELECTORS.RESULT_CARD)).toContainText(LABELS.NO_TITLE);
   });
 });

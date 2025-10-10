@@ -1,3 +1,19 @@
+import {
+  FACET_FIELDS,
+  FACET_HEADINGS,
+  FACET_VALUES,
+  LABELS,
+  ROLES,
+  SEARCH_TERMS,
+  SELECTORS,
+} from './support/catalog-data.js';
+import {
+  applyFacet,
+  expectActiveFacetValue,
+  firstResultCard,
+  openHomepage,
+  searchFromHome,
+} from './support/catalog-interactions.js';
 import { expect, test } from '@playwright/test';
 
 test.describe('Brief Results Display Feature', () => {
@@ -6,38 +22,39 @@ test.describe('Brief Results Display Feature', () => {
   test.describe.configure({ mode: 'serial' });
 
   test('displays appropriate fields at the collection level', async ({ page }) => {
-    await page.goto('/');
-    await page.locator('input[name="q"]').fill('bloch');
-
-    await page.getByRole('button', { name: /search/i }).click();
-    await expect(page.locator('span.filter-value')).toContainText(/bloch/i);
-
-    await page.getByRole('button', { name: 'Level' }).click();
-    await page
-      .locator('div.blacklight-format_sim')
-      .getByRole('link', { name: 'Archival Collection', exact: true })
-      .click();
-
-    await expect(page.locator('span.filter-format_sim span.filter-value')).toHaveText(
-      /Archival Collection/i
+    await searchFromHome(page, SEARCH_TERMS.BLOCH);
+    await expect(page.locator(SELECTORS.ACTIVE_FILTER_VALUE)).toContainText(
+      new RegExp(SEARCH_TERMS.BLOCH, 'i')
     );
 
-    await page.getByRole('button', { name: 'Collection' }).click();
-    await page
-      .locator('div.blacklight-collection_sim')
-      .getByRole('link', { name: 'Mark Bloch Postal Art Network (PAN) Archive', exact: true })
-      .click();
+    await applyFacet(page, {
+      heading: FACET_HEADINGS.LEVEL,
+      field: FACET_FIELDS.FORMAT,
+      value: FACET_VALUES.ARCHIVAL_COLLECTION,
+    });
+    await expectActiveFacetValue(page, {
+      field: FACET_FIELDS.FORMAT,
+      value: new RegExp(FACET_VALUES.ARCHIVAL_COLLECTION, 'i'),
+    });
 
-    await expect(page.locator('span.filter-collection_sim span.filter-value')).toHaveText(
-      'Mark Bloch Postal Art Network (PAN) Archive'
-    );
+    await applyFacet(page, {
+      heading: FACET_HEADINGS.COLLECTION,
+      field: FACET_FIELDS.COLLECTION,
+      value: FACET_VALUES.MARK_BLOCH_ARCHIVE,
+    });
+    await expectActiveFacetValue(page, {
+      field: FACET_FIELDS.COLLECTION,
+      value: FACET_VALUES.MARK_BLOCH_ARCHIVE,
+    });
 
-    const resultCard = page.locator('article.document-position-1');
+    const resultCard = firstResultCard(page);
     await expect(resultCard).toBeVisible();
 
-    const metadata = resultCard.locator('dl.document-metadata');
+    const metadata = resultCard.locator(SELECTORS.RESULT_METADATA);
 
-    await expect(metadata.locator('dd.blacklight-format_ssm')).toContainText('Archival Collection');
+    await expect(page.locator(SELECTORS.RESULT_METADATA_FORMAT)).toContainText(
+      FACET_VALUES.ARCHIVAL_COLLECTION
+    );
     await expect(metadata.locator('dd.blacklight-unitdate_ssm')).toContainText(
       'Inclusive, 1978-2009'
     );
@@ -56,48 +73,47 @@ test.describe('Brief Results Display Feature', () => {
   test('links to search all materials within collection launches faceted search', async ({
     page,
   }) => {
-    await page.goto('/');
+    await openHomepage(page);
 
-    await page.getByRole('button', { name: 'Level' }).click();
+    await applyFacet(page, {
+      heading: FACET_HEADINGS.LEVEL,
+      field: FACET_FIELDS.FORMAT,
+      value: FACET_VALUES.ARCHIVAL_COLLECTION,
+    });
+    await expectActiveFacetValue(page, {
+      field: FACET_FIELDS.FORMAT,
+      value: new RegExp(FACET_VALUES.ARCHIVAL_COLLECTION, 'i'),
+    });
+
+    await applyFacet(page, {
+      heading: FACET_HEADINGS.COLLECTION,
+      field: FACET_FIELDS.COLLECTION,
+      value: FACET_VALUES.MARK_BLOCH_ARCHIVE,
+    });
+    await expectActiveFacetValue(page, {
+      field: FACET_FIELDS.COLLECTION,
+      value: FACET_VALUES.MARK_BLOCH_ARCHIVE,
+    });
+
     await page
-      .locator('div.blacklight-format_sim')
-      .getByRole('link', { name: 'Archival Collection', exact: true })
+      .getByRole(ROLES.LINK, { name: 'Search all archival materials within this collection' })
       .click();
 
-    await expect(page.locator('span.filter-format_sim span.filter-value')).toHaveText(
-      /Archival Collection/i
+    await expect(page.locator(SELECTORS.FILTER_FORMAT_SECTION)).toHaveCount(0);
+    await expect(page.locator(SELECTORS.FILTER_COLLECTION_SECTION)).toContainText(
+      FACET_VALUES.MARK_BLOCH_ARCHIVE
     );
-
-    await page.getByRole('button', { name: 'Collection' }).click();
-    await page
-      .locator('div.blacklight-collection_sim')
-      .getByRole('link', { name: 'Mark Bloch Postal Art Network (PAN) Archive', exact: true })
-      .click();
-
-    await expect(page.locator('span.filter-collection_sim span.filter-value')).toHaveText(
-      'Mark Bloch Postal Art Network (PAN) Archive'
+    await expect(page.locator(SELECTORS.RESULT_METADATA_FORMAT)).toContainText(
+      FACET_VALUES.ARCHIVAL_COLLECTION
     );
-
-    await page
-      .getByRole('link', { name: 'Search all archival materials within this collection' })
-      .click();
-
-    await expect(page.locator('span.filter-format_sim')).toHaveCount(0);
-    await expect(page.locator('div.blacklight-collection_sim')).toContainText(
-      'Mark Bloch Postal Art Network (PAN) Archive'
-    );
-    await expect(
-      page.locator('article.document-position-1 dl.document-metadata dd.blacklight-format_ssm')
-    ).toContainText('Archival Collection');
   });
 
   test("displays 'No Title' when a document doesn't have a title", async ({ page }) => {
-    await page.goto('/');
-    await page.locator('input[name="q"]').fill('kopit');
+    await searchFromHome(page, SEARCH_TERMS.KOPIT);
 
-    await page.getByRole('button', { name: /search/i }).click();
-
-    await expect(page.locator('span.filter-value')).toContainText(/kopit/i);
-    await expect(page.locator('article.document-position-1')).toContainText('No Title');
+    await expect(page.locator(SELECTORS.ACTIVE_FILTER_VALUE)).toContainText(
+      new RegExp(SEARCH_TERMS.KOPIT, 'i')
+    );
+    await expect(page.locator(SELECTORS.RESULT_CARD)).toContainText(LABELS.NO_TITLE);
   });
 });
