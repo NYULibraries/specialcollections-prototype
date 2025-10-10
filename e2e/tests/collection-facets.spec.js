@@ -1,44 +1,58 @@
 import { expect, test } from '@playwright/test';
+import {
+  FACET_FIELDS,
+  FACET_HEADINGS,
+  FACET_VALUES,
+  SEARCH_TERMS,
+} from './support/catalog-data.js';
+import {
+  applyFacet,
+  expectActiveFacetValue,
+  firstResultCard,
+  openHomepage,
+  searchFromHome,
+} from './support/catalog-interactions.js';
 
 test.describe('Collection facets', () => {
   test.describe.configure({ mode: 'serial' });
 
   test('limiting search by a collection facet shows results', async ({ page }) => {
-    await page.goto('/');
+    await openHomepage(page);
 
-    await page.getByRole('button', { name: 'Collection' }).click();
-    await page
-      .locator('div.blacklight-collection_sim')
-      .getByRole('link', { name: 'Alfred C. Berol Collection of Lewis Carroll', exact: true })
-      .click();
+    await applyFacet(page, {
+      heading: FACET_HEADINGS.COLLECTION,
+      field: FACET_FIELDS.COLLECTION,
+      value: FACET_VALUES.ALFRED_C_BEROL_COLLECTION,
+    });
 
-    await expect(page.locator('span.filter-collection_sim span.filter-value')).toHaveText(
-      'Alfred C. Berol Collection of Lewis Carroll'
-    );
+    await expectActiveFacetValue(page, {
+      field: FACET_FIELDS.COLLECTION,
+      value: FACET_VALUES.ALFRED_C_BEROL_COLLECTION,
+    });
 
-    const firstResult = page.locator('article.document-position-1');
+    const firstResult = firstResultCard(page);
     await expect(firstResult).toBeVisible();
   });
 
   test('filtering search results by a collection facet shows results', async ({ page }) => {
-    await page.goto('/');
+    await searchFromHome(page, SEARCH_TERMS.BEROL);
 
-    await page.locator('input[name="q"]').fill('berol');
-    await page.getByRole('button', { name: /search/i }).click();
-
-    await expect(page.locator('span.filter-value')).toContainText(/berol/i);
-
-    await page.getByRole('button', { name: 'Collection' }).click();
-    await page
-      .locator('div.blacklight-collection_sim')
-      .getByRole('link', { name: 'Alfred C. Berol Collection of Lewis Carroll', exact: true })
-      .click();
-
-    await expect(page.locator('span.filter-collection_sim span.filter-value')).toHaveText(
-      'Alfred C. Berol Collection of Lewis Carroll'
+    await expect(page.locator('span.filter-value')).toContainText(
+      new RegExp(SEARCH_TERMS.BEROL, 'i')
     );
 
-    const firstResult = page.locator('article.document-position-1');
+    await applyFacet(page, {
+      heading: FACET_HEADINGS.COLLECTION,
+      field: FACET_FIELDS.COLLECTION,
+      value: FACET_VALUES.ALFRED_C_BEROL_COLLECTION,
+    });
+
+    await expectActiveFacetValue(page, {
+      field: FACET_FIELDS.COLLECTION,
+      value: FACET_VALUES.ALFRED_C_BEROL_COLLECTION,
+    });
+
+    const firstResult = firstResultCard(page);
     await expect(firstResult).toBeVisible();
   });
 });
