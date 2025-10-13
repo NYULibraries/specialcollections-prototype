@@ -4,6 +4,7 @@ import {
   FACET_HEADINGS,
   FACET_VALUES,
   SEARCH_TERMS,
+  SELECTORS,
 } from './support/catalog-data.js';
 import {
   applyFacet,
@@ -37,7 +38,7 @@ test.describe('Collection facets', () => {
   test('filtering search results by a collection facet shows results', async ({ page }) => {
     await searchFromHome(page, SEARCH_TERMS.BEROL);
 
-    await expect(page.locator('span.filter-value')).toContainText(
+    await expect(page.locator(SELECTORS.ACTIVE_FILTER_VALUE)).toContainText(
       new RegExp(SEARCH_TERMS.BEROL, 'i')
     );
 
