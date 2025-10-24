@@ -61,6 +61,14 @@ Important: create an `.env.test` file in the `e2e` directory with the following 
 PLAYWRIGHT_BASE_URL=http://localhost:3000
 ```
 
+Note: if your local Rails database has pending migrations you may see an
+`ActiveRecord::PendingMigrationError` when starting the app or running the
+tests. Apply migrations before running the server or Playwright with:
+
+```bash
+bin/rails db:migrate
+```
+
 Fixtures remain in Solr between runs. When you do need a fresh load, either set `PLAYWRIGHT_LOAD_FIXTURES=1 bin/playwright-local` or pass `--load-fixtures` as the first argument before any Playwright flags.
 
 To run Playwright in headed mode, run from root:
