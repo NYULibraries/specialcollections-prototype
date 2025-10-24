@@ -7,10 +7,10 @@ NYU Libraries Special Collections Discovery Application recreated with Blackligh
 To check out the project and stand up a local instance:
 
 ```bash
-$ git clone git@github.com:NYULibraries/specialcollections-prototype.git
-$ cd specialcollections-prototype
-$ bundle install
-$ bin/rake sc:server
+git clone git@github.com:NYULibraries/specialcollections-prototype.git
+cd specialcollections-prototype
+bundle install
+bin/rake sc:server
 ```
 
 Then visit <http://localhost:3000>
@@ -22,7 +22,7 @@ There is a growing number of fixture files in `spec/fixtures/files`, pulled from
 While the dev server is running (`sc:server` above) you can load these fixtures by running:
 
 ```bash
-$ bin/rake sc:load
+bin/rake sc:load
 ```
 
 ## Playwright End-to-End Tests
@@ -49,18 +49,46 @@ yarn --cwd e2e format
 
 Use `yarn --cwd e2e lint` to verify formatting and linting without modifying files.
 
+To exercise the suite without Docker, start `bin/rake sc:server` in another terminal. With the app running locally, use the helper script to run the Playwright suite without reloading fixtures on every invocation:
+
+```bash
+bin/playwright-local
+```
+
+Important: create an `.env.test` file in the `e2e` directory with the following content so the helper points Playwright at your local app:
+
+```bash
+PLAYWRIGHT_BASE_URL=http://localhost:3000
+```
+
+Note: if your local Rails database has pending migrations you may see an
+`ActiveRecord::PendingMigrationError` when starting the app or running the
+tests. Apply migrations before running the server or Playwright with:
+
+```bash
+bin/rails db:migrate
+```
+
+Fixtures remain in Solr between runs. When you do need a fresh load, either set `PLAYWRIGHT_LOAD_FIXTURES=1 bin/playwright-local` or pass `--load-fixtures` as the first argument before any Playwright flags.
+
+To run Playwright in headed mode, run from root:
+
+```bash
+yarn --cwd e2e test:e2e --headed
+```
+
 ## Test Suite
 
 To run the test suite:
 
 ```bash
-$ bin/rake sc:test
+bin/rake sc:test
 ```
 
 To autofix any Rubocop issues, run the following:
 
 ```bash
-$ bundle exec rubocop -a
+bundle exec rubocop -a
 ```
 
 ## Running Against Another Solr
@@ -68,6 +96,5 @@ $ bundle exec rubocop -a
 To stand up dev against an existing instance of Solr:
 
 ```bash
-$ SOLR_URL=http://ip-address:port/solr/findingaids bin/rails server
+SOLR_URL=http://ip-address:port/solr/findingaids bin/rails server
 ```
-
