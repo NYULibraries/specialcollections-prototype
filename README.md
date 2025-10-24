@@ -55,6 +55,12 @@ To exercise the suite without Docker, start `bin/rake sc:server` in another term
 bin/playwright-local
 ```
 
+Important: create an `.env.test` file in the `e2e` directory with the following content so the helper points Playwright at your local app:
+
+```bash
+PLAYWRIGHT_BASE_URL=http://localhost:3000
+```
+
 Fixtures remain in Solr between runs. When you do need a fresh load, either set `PLAYWRIGHT_LOAD_FIXTURES=1 bin/playwright-local` or pass `--load-fixtures` as the first argument before any Playwright flags.
 
 To run Playwright in headed mode, run from root:
