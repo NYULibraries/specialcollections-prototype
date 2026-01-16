@@ -50,6 +50,7 @@ namespace :sc do
 
     add_document("berol.xml")
     add_document("bloch.xml")
+    add_document("intelligencer.xml")
     add_document("oh002.xml")
     add_document("kopit.xml")
   end

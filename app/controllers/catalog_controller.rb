@@ -215,6 +215,7 @@ class CatalogController < ApplicationController
   # We need to override Blacklight's `index` in order to remediate the Solr response.
   def index
     @response = Blacklight::SearchService.new(config: CatalogController.blacklight_config, user_params: params).search_results
+    @collection_page = params[:collection_page]
 
     # remediate_solr_response
 

@@ -21,6 +21,29 @@ describe "stable repository links" do
         expect(page).to have_selector('article.document')
       end
     end
+
+    it "hides the remove button next to the repository" do
+      visit "/fales"
+
+      within("div.blacklight-repository_sim") do
+        expect(page).to have_selector('a.remove', visible: false)
+      end
+    end
+  end
+
+  context "Fales facet" do
+    it "shows the remove button next to the repository" do
+      visit "/"
+
+      click_button "Library"
+      within("div.blacklight-repository_sim") do
+        click_link "The Fales Library & Special Collections"
+      end
+
+      within("div.blacklight-repository_sim") do
+        expect(page).to have_selector('a.remove', visible: true)
+      end
+    end
   end
 
   context "Tamiment homepage" do
