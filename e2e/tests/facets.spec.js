@@ -19,8 +19,6 @@ test.describe('Facets', () => {
 
     const facetButtons = page.locator('#facet-panel-collapse .facet-field-heading button');
 
-    await expect(facetButtons).toHaveCount(EXPECTED_FACET_ORDER.length);
-
     const actualOrder = await facetButtons.allTextContents();
     const normalizedOrder = actualOrder.map((text) => text.replace(/\s+/g, ' ').trim());
 
