@@ -6,7 +6,7 @@ module Blacklight
 
       @items = [
         { text: "NYU Libraries", href: "https://library.nyu.edu" },
-        { text: "Library Catalog", href: "http://bobcat.library.nyu.edu/nyu" }
+        { text: "Library Catalog", href: "https://search.library.nyu.edu" }
       ]
 
       if @request.query_string.present?
