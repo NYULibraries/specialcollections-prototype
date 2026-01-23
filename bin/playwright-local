@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+SOLR_URL_DEFAULT="http://localhost:8983/solr/development-core"
+SOLR_URL="${SOLR_URL:-$SOLR_URL_DEFAULT}"
+SOLR_PING_URL="${SOLR_URL%/}/admin/ping?wt=json"
+RAILS_URL="${PLAYWRIGHT_RAILS_URL:-http://localhost:3000/}"
+LOAD_FIXTURES="${PLAYWRIGHT_LOAD_FIXTURES:-0}"
+
+if [[ "${1:-}" == "--load-fixtures" ]]; then
+  LOAD_FIXTURES=1
+  shift
+fi
+
+CURL_OPTS=(
+  --silent
+  --show-error
+  --connect-timeout 2
+  --max-time 3
+)
+
+# Generic wait helper. Usage:
+#   wait_for_url <url> [mode]
+# Modes:
+#   solr - ping the given URL (expects JSON with "status":"OK")
+#   http - HEAD request to the given URL; non-2xx/3xx is failure
+# Env:
+#   WAIT_RETRIES (default 30), WAIT_SLEEP (default 1)
+wait_for_url() {
+  local url="$1"
+  local mode="${2:-http}"
+  local retries="${WAIT_RETRIES:-30}"
+  local sleep_sec="${WAIT_SLEEP:-1}"
+
+  if [[ "$mode" == "solr" ]]; then
+    echo "Waiting for Solr at $url..."
+  else
+    echo "Waiting for $url..."
+  fi
+
+  for ((attempt=1; attempt<=retries; attempt++)); do
+    if [[ "$mode" == "solr" ]]; then
+      if curl "${CURL_OPTS[@]}" "$url" | grep -q '"status":"OK"'; then
+        echo "Solr is ready."
+        return 0
+      fi
+    else
+      if curl "${CURL_OPTS[@]}" --fail --head "$url" >/dev/null 2>&1; then
+        echo "$url is reachable."
+        return 0
+      fi
+    fi
+    sleep "$sleep_sec"
+  done
+
+  if [[ "$mode" == "solr" ]]; then
+    echo "Solr did not become ready within ${retries} attempts: $url" >&2
+  else
+    echo "Timed out waiting for $url" >&2
+  fi
+  return 1
+}
+
+wait_for_url "$SOLR_PING_URL" solr
+
+if [[ "$LOAD_FIXTURES" != "0" ]]; then
+  echo "Running bin/rake sc:load..."
+  SOLR_URL="$SOLR_URL" bin/rake sc:load
+else
+  echo "Skipping bin/rake sc:load (set PLAYWRIGHT_LOAD_FIXTURES=1 or pass --load-fixtures to enable)."
+fi
+
+wait_for_url "$RAILS_URL" http
+
+echo "Running Playwright suite..."
+yarn --cwd e2e test:e2e "$@"
