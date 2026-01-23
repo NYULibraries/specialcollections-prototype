@@ -3,7 +3,7 @@ export const ATTRIBUTES = {
 };
 
 export const EXTERNAL_LINKS = {
-  LIBRARY_CATALOG: 'http://bobcat.library.nyu.edu/nyu',
+  LIBRARY_CATALOG: 'https://search.library.nyu.edu',
   NYU_LIBRARIES: 'https://library.nyu.edu',
   SPECIAL_COLLECTIONS_CENTER: 'https://library.nyu.edu/locations/special-collections-center/',
 };
