@@ -70,5 +70,5 @@ group :development, :test do
 end
 gem "rsolr", ">= 1.0", "< 3"
 gem "bootstrap", "~> 5.3"
-gem "blacklight-marc", "~> 8.0"
+gem "blacklight-marc", "~> 9.0"
 gem "solrizer"
