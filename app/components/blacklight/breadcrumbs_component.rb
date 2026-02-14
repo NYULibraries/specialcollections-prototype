@@ -16,6 +16,9 @@ module Blacklight
         @items << { text: "Archival Collections", href: "/" }
         @items << { text: @repository, href: @request.path }
         @items << { text: "Search" }
+      elsif @request.path == "/404"
+        @items << { text: "Archival Collections", href: "/" }
+        @items << { text: "Page Not Found" }
       else
         @items << { text: "Archival Collections" }
       end
