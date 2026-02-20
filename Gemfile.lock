@@ -98,7 +98,7 @@ GEM
       marc-fastxmlwriter
       rails
       traject (~> 3.0)
-    bootsnap (1.22.0)
+    bootsnap (1.23.0)
       msgpack (~> 1.2)
     bootstrap (5.3.8)
       popper_js (>= 2.11.8, < 3)
