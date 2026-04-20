@@ -158,17 +158,6 @@ class CatalogController < ApplicationController
     )
 
     ##
-    # Add repository field query from config file
-    Findingaids::Repositories.repositories.each do |coll|
-      config.add_search_field(coll.last["url_safe_display"],
-                              label: coll.last["display"],
-                              solr_parameters: { fq: "#{solr_name("repository", :stored_sortable)}:#{(coll.last["admin_code"].present?) ? coll.last["admin_code"].to_s : '*'}" },
-                              advanced_parse: false,
-                              include_in_advanced_search: false
-      )
-    end
-
-    ##
     # Add advanced search fields
     advanced_search_fields.each do |field|
       config.add_search_field(solr_name(field[:field], :searchable),
