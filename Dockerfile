@@ -35,12 +35,13 @@ RUN apt-get update -qq && \
 
 # Install JavaScript dependencies
 ARG NODE_VERSION=22.9.0
-ARG YARN_VERSION=1.22.22
+ARG NODE_BUILD_VERSION=822c139777c24f46bfde317e6be666b33eac4bad
 ENV PATH=/usr/local/node/bin:$PATH
-RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
-    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
-    npm install -g yarn@$YARN_VERSION && \
-    rm -rf /tmp/node-build-master
+RUN mkdir -p /tmp/node-build && \
+    curl -fsSL "https://github.com/nodenv/node-build/archive/${NODE_BUILD_VERSION}.tar.gz" | tar xz --strip-components=1 -C /tmp/node-build && \
+    /tmp/node-build/bin/node-build "${NODE_VERSION}" /usr/local/node && \
+    corepack enable && \
+    rm -rf /tmp/node-build
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
@@ -50,7 +51,8 @@ RUN bundle install && \
 
 # Install node modules
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN corepack install && \
+    yarn install --frozen-lockfile
 
 # Copy application code
 COPY . .
