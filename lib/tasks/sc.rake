@@ -22,7 +22,6 @@ namespace :sc do
       solr.with_collection(name: "development-core", dir: Rails.root.join("solr/conf").to_s) do
         puts "Solr running, ^C to exit"
         begin
-          ENV["SOLR_URL"] = "http://localhost:8983/solr/development-core"
           system "bundle exec rails s -b 0.0.0.0"
           sleep
         rescue Interrupt
@@ -38,7 +37,6 @@ namespace :sc do
 
     SolrWrapper.wrap(SHARED_SOLR_OPTIONS.merge(port: 8984, instance_dir: "tmp/test-core")) do |solr|
       solr.with_collection(name: "test-core", dir: Rails.root.join("solr/conf").to_s) do
-        ENV["SOLR_URL"] = "http://localhost:8984/solr/test-core"
         Rake::Task["default"].invoke
       end
     end
