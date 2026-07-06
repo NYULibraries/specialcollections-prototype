@@ -6,3 +6,24 @@ inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 # # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
 # Layout/SpaceInsideArrayLiteralBrackets:
 #   Enabled: false
+
+# RuboCop's style guide has this:
+#   "Single Quote: Prefer single-quoted strings when you don’t need string
+#    interpolation or special symbols such as \t, \n, ', etc."
+# Source: https://rubystyle.guide/#consistent-string-literals-single-quote
+#
+# Bizarrely, the default RuboCop rule requires double-quotes.  No adequate
+# reason is given for this unreasonable default, and there doesn't seem to be a
+# Ruby-specific rebuttal from RuboCop to these arguments:
+#    https://anti-pattern.com/always-use-double-quoted-strings-in-ruby.
+# ...which simply lists the reasons that everyone is familiar with for every
+# other programming language that has similar single and double quote semantics.
+# In the RuboCop repo:
+# "Single quotes vs double quotes #184"
+#    https://github.com/rubocop/ruby-style-guide/issues/184
+# "Prefer Double Quoted Strings by Default #1615"
+#    https://github.com/rubocop/rubocop/issues/1615
+# ...not argument's being made for the RuboCop default going against it's own
+# style guide.
+StringLiterals:
+    Enabled: false
