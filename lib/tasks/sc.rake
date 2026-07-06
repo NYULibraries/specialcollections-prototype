@@ -16,7 +16,7 @@ namespace :sc do
 
   desc "Run Solr and Blacklight for interactive development"
   task server: [ :environment, "assets:precompile" ]  do
-    if ENV.has_key?('SOLR_URL')
+    if ENV.has_key?("SOLR_URL")
       system "bundle exec rails s -b 0.0.0.0"
       sleep
     else
