@@ -16,16 +16,20 @@ namespace :sc do
 
   desc "Run Solr and Blacklight for interactive development"
   task server: [ :environment, "assets:precompile" ]  do
-    FileUtils.rm_rf "tmp/development-core"
-
-    SolrWrapper.wrap(SHARED_SOLR_OPTIONS.merge(port: 8983, instance_dir: "tmp/development-core")) do |solr|
-      solr.with_collection(name: "development-core", dir: Rails.root.join("solr/conf").to_s) do
-        puts "Solr running, ^C to exit"
-        begin
-          system "bundle exec rails s -b 0.0.0.0"
-          sleep
-        rescue Interrupt
-          puts "\nShutting down..."
+    if ENV.has_key?('SOLR_URL')
+      system "bundle exec rails s -b 0.0.0.0"
+      sleep
+    else
+      FileUtils.rm_rf "tmp/development-core"
+      SolrWrapper.wrap(SHARED_SOLR_OPTIONS.merge(port: 8983, instance_dir: "tmp/development-core")) do |solr|
+        solr.with_collection(name: "development-core", dir: Rails.root.join("solr/conf").to_s) do
+          puts "Solr running, ^C to exit"
+          begin
+            system "bundle exec rails s -b 0.0.0.0"
+            sleep
+          rescue Interrupt
+            puts "\nShutting down..."
+          end
         end
       end
     end
