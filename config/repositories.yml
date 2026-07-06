@@ -1,5 +1,10 @@
 Catalog:
   repositories:
+    edip:
+      display: 'EDIP'
+      url_safe_display: 'EDIP'
+      url: "edip"
+      admin_code: "edip"
     fales:
       display: 'The Fales Library & Special Collections'
       url_safe_display: 'The Fales Library %26 Special Collections'
