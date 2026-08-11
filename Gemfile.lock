@@ -520,7 +520,7 @@ DEPENDENCIES
   rails (~> 8.0.2)
   rsolr (>= 1.0, < 3)
   rspec-its
-  rspec-rails (~> 8.0.1)
+  rspec-rails (~> 8.0.4)
   rubocop-rails-omakase
   solid_cable
   solid_cache
